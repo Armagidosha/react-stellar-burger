@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.details {
+  align-self: flex-start;
+}
+
+.image {
+  width: 480px;
+  height: 240px;
+}
+
+.macronutrients_ul {
+  display: flex;
+  list-style: none;
+  text-align: center;
+  gap: 20px;
+  padding: 32px 0 60px 0;
+  margin: 0;
+}
+
+.macronutrients_li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
