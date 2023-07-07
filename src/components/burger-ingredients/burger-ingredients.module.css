@@ -1,0 +1,23 @@
+.tab_ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.ingredients_container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+}
+
+.ingredients_ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 32px 16px;
+  padding: 0 16px 0 12px;
+  margin: 0;
+}
