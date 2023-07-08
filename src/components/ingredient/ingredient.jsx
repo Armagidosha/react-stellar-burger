@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredient.module.css';
 import { memo } from 'react';
+import { ingredientPropType } from '../../utils/prop-types';
 
 const Ingredient = memo(({data, onClick}) => {
   return (
@@ -17,11 +18,7 @@ const Ingredient = memo(({data, onClick}) => {
 });
 
 Ingredient.propTypes = {
-  data: PropTypes.shape({
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }).isRequired,
+  data: ingredientPropType.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

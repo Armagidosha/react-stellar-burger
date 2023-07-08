@@ -13,7 +13,7 @@ const BurgerConstructor = memo(({ data, toggleModal }) => {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={data[7].name}
+            text={`${data[7].name} (Верх)`}
             price={data[7].price}
             thumbnail={data[7].image}
           />
@@ -108,7 +108,7 @@ const BurgerConstructor = memo(({ data, toggleModal }) => {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={data[7].name}
+            text={`${data[7].name} (Низ)`}
             price={data[7].price}
             thumbnail={data[7].image}
           />

@@ -26,17 +26,17 @@ const BurgerIngredients = memo(({data, toggleModal}) => {
       <h2 className='text text_type_main-large'>Соберите бургер</h2>
       <ul className={`${styles.tab_ul} pt-5`}>
         <li className={styles.tab_list}>
-          <Tab value="bun" active={current === 'bun'} onClick={() => scrollIntoIngredient('bun')}>
+          <Tab value="bun" active={current === 'bun'} onClick={scrollIntoIngredient}>
             Булки
           </Tab>
         </li>
         <li className={styles.tab_list}>
-          <Tab value="sauce" active={current === 'sauce'} onClick={() => scrollIntoIngredient('sauce')}>
+          <Tab value="sauce" active={current === 'sauce'} onClick={scrollIntoIngredient}>
             Соусы
           </Tab>
         </li>
         <li className={styles.tab_list}>
-          <Tab value="main" active={current === 'main'} onClick={() => scrollIntoIngredient('main')}>
+          <Tab value="main" active={current === 'main'} onClick={scrollIntoIngredient}>
             Начинки
           </Tab>
         </li>
