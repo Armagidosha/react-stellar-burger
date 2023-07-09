@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  width: 272px;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+
+.container:hover {
+  opacity: .72;
+}
+
+.image {
+  height: 120px;
+  width: 240px;
+}
+
+.priceContainer {
+  display: flex;
+  height: 24px;
+}
