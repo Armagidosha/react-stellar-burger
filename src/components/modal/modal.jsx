@@ -5,7 +5,9 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useRef, memo } from 'react';
 
-const Modal = memo(({ children, toggleModal, container }) => {
+const modalRoot = document.getElementById('modal');
+
+const Modal = memo(({ children, toggleModal }) => {
 
   const modalOverlayRef = useRef(null)
 
@@ -44,14 +46,13 @@ const Modal = memo(({ children, toggleModal, container }) => {
       </div>
       <ModalOverlay ref={modalOverlayRef} close={toggleModal} />
     </>,
-    container
+    modalRoot
   )
 })
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
   toggleModal: PropTypes.func.isRequired,
-  container: PropTypes.instanceOf(Element).isRequired,
 };
 
 export default Modal

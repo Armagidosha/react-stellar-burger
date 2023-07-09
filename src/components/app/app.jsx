@@ -50,8 +50,6 @@ function App() {
     setCurrentModal('order');
   }
 
-  const modalRoot = document.getElementById('modal');
-
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -67,9 +65,8 @@ function App() {
           </span>
         )}
       </main>
-      <div id='modal'></div>
-      {modalRoot && isOpen && (
-        <Modal toggleModal={toggleModal} container={modalRoot}>
+      {isOpen && (
+        <Modal toggleModal={toggleModal}>
           {currentModal === 'ingredient' ?
             <IngredientDetails ingredient={currentIngr} /> :
             <OrderDetails />
