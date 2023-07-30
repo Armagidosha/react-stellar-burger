@@ -15,26 +15,6 @@ function App() {
   const [currentIngr, setCurrentIngr] = useState(null)
   const [currentModal, setCurrentModal] = useState('')
 
-  useEffect(() => {
-    const getResponse = (res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    };
-
-    fetch(utils.url)
-      .then(getResponse)
-      .then((data) => {
-        setData(data.data);
-        setHasErrors(false);
-      })
-      .catch((err) => {
-        setHasErrors(true);
-        console.error(`Ошибка: ${err}`);
-      });
-  }, []);
-
   const toggleModal = () => {
     setIsOpen(!isOpen);
   }
