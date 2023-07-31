@@ -1,5 +1,5 @@
 .burgerConstructor {
-  width: 600px;
+  width: 700px;
   max-height: calc(100vh - 290px);
   box-sizing: border-box;
 }
@@ -18,13 +18,17 @@
   composes: ingredients_ul;
   overflow-y: auto;
   max-height: 364px;
+  min-width: 500px;
 }
 
 .ingredients_li {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-right: 8px;
+  margin-right: 3px;
+  min-width: 500px;
+  width: 96%;
+  max-width: 560px;
 }
 
 .list_element {
@@ -38,6 +42,11 @@
 }
 
 .sum {
- composes: sum_container;
- gap: 8px
+  composes: sum_container;
+  gap: 8px
+}
+
+.sign {
+  display: block;
+  width: 500px;
 }

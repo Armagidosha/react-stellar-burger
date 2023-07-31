@@ -14,7 +14,7 @@ export const fetchIngredients = async setData => {
       isLoading: true
     }))
 
-    const response = await fetch(`${utils.url}/ingredients`);
+    const response = await fetch(`${utils.url}ingredients`);
     const data = await checkResponse(response);
 
     setData(prevData => ({
@@ -33,14 +33,16 @@ export const fetchIngredients = async setData => {
     }))
   }
 }
-export const postOrderData = async (postData, setOrderData) => {
+//
+//
+export const postOrderData = async (postData, setOrderId) => {
   try {
-    setOrderData(prevOrderData => ({
-      ...prevOrderData,
+    setOrderId(prevOrderId => ({
+      ...prevOrderId,
       isLoading: true
     }))
 
-    const response = await fetch(`${utils.url}/orders`,
+    const response = await fetch(`${utils.url}orders`,
       {
         method: 'POST',
         headers: {
@@ -51,18 +53,18 @@ export const postOrderData = async (postData, setOrderData) => {
     );
 
     const data = await checkResponse(response);
-    setOrderData(prevOrderData => ({
-      ...prevOrderData,
+    setOrderId(prevOrderId => ({
+      ...prevOrderId,
       isLoading: false,
       hasError: false,
-      data: data.order.number
+      data: data.order.number.toString()
     })
     )
   } catch (error) {
     console.error(`Ошибка: ${error}`);
 
-    setOrderData(prevOrderData => ({
-      ...prevOrderData,
+    setOrderId(prevOrderId => ({
+      ...prevOrderId,
       isLoading: false,
       hasError: true
     }))
