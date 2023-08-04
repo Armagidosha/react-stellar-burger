@@ -3,12 +3,12 @@ import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useRef, memo, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 const modalRoot = document.getElementById('modal');
 
-const Modal = memo(({ children }) => {
+const Modal = ({ children }) => {
   const modalOverlayRef = useRef(null);
   const dispatch = useDispatch()
   const toggleModal = useCallback(() => {
@@ -21,18 +21,19 @@ const Modal = memo(({ children }) => {
     toggleModal();
   };
 
-  const handleEscClose = useCallback((evt) => {
-    if (evt.key === 'Escape') {
-      toggleModal();
-    }
-  }, [toggleModal]);
 
   useEffect(() => {
+    const handleEscClose = (evt) => {
+      if (evt.key === 'Escape') {
+        toggleModal();
+      }
+    };
+
     document.addEventListener('keydown', handleEscClose);
     return () => {
       document.removeEventListener('keydown', handleEscClose);
     };
-  }, [handleEscClose]);
+  });
 
   return createPortal(
     <>
@@ -44,7 +45,7 @@ const Modal = memo(({ children }) => {
     </>,
     modalRoot
   )
-})
+}
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
