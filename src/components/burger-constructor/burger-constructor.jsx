@@ -1,40 +1,62 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { memo, useContext, useEffect, useState } from 'react';
-import { BurgerConstructorContext } from '../../utils/burgerConstructorContext';
+import { memo, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
+import { useDrop } from 'react-dnd';
+import { postOrderData } from '../../utils/api';
 
 const BurgerConstructor = memo(({ toggleModal }) => {
-  const { burgerState, burgerDispatcher } = useContext(BurgerConstructorContext);
-  const [bun, setBun] = useState(null);
-  const [ingredients, setIngredient] = useState([]);
+  const burgerState = useSelector(store => store.burgerState);
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    setBun(burgerState.ingredients.find(
-      ingredient =>
-        ingredient.type === 'bun'));
+  const bun = useMemo(() => burgerState.ingredients.find(ingredient => ingredient.type === 'bun'), [burgerState.ingredients]);
+  const ingredients = useMemo(() => burgerState.ingredients.filter(ingredient => ingredient.type !== 'bun'), [burgerState.ingredients]);
 
-    setIngredient(burgerState.ingredients.filter(
-      ingredient =>
-        ingredient.type !== 'bun'));
-  }, [burgerState])
+  const [{ canDrop, isOver }, onDrop] = useDrop({
+    accept: 'ingredient',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop()
+    })
+  })
 
+  const isActive = canDrop && isOver
+  let backgroundColor = ''
+  if (isActive) {
+    backgroundColor = '#8585AD'
+  } else if (canDrop) {
+    backgroundColor = '#222'
+  }
+
+  const setLocked = () => {
+    if (ingredients.length === 0) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const handleClick = () => {
+    dispatch(postOrderData({
+      "ingredients": burgerState.ingredients.map(ingr => ingr._id)
+    }))
+
+    dispatch({
+      type: 'OPEN_ORDER_MODAL'
+    })
+  }
   return (
     <section className={`${styles.burgerConstructor} custom-scroll pt-25 pl-4`}>
-      {!bun && ingredients.length == 0 &&
-        <span className={`${styles.sign} text text_type_main-medium mt-5`}>
-          Начните добавлять ингредиенты, чтобы сделать заказ
-        </span>
-      }
-      <ul className={styles.ingredients_ul}>
+      <ul ref={onDrop} style={{ backgroundColor }} className={styles.ingredients_ul}>
         <li className={styles.list_element}>
           {bun &&
             <ConstructorElement
               type="top"
-              isLocked={true}
+              isLocked={setLocked()}
               text={`${bun.name} (верх)`}
               price={bun.price}
               thumbnail={bun.image}
+              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
             />
           }
         </li>
@@ -48,7 +70,7 @@ const BurgerConstructor = memo(({ toggleModal }) => {
                   text={ingredient.name}
                   price={ingredient.price}
                   thumbnail={ingredient.image}
-                  handleClose={() => burgerDispatcher({ type: 'REMOVE', payload: ingredient })}
+                  handleClose={() => dispatch({ type: 'REMOVE', item: ingredient })}
                 />
               </li>
             )}
@@ -58,22 +80,23 @@ const BurgerConstructor = memo(({ toggleModal }) => {
           {bun &&
             <ConstructorElement
               type="bottom"
-              isLocked={true}
+              isLocked={setLocked()}
               text={`${bun.name} (низ)`}
               price={bun.price}
               thumbnail={bun.image}
+              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
             />
           }
         </li>
       </ul>
       <div className={`${styles.sum_container} pt-10 pr-4`}>
         <span className={`${styles.sum} text text_type_digits-medium pr-10`}>
-          {burgerState.summ}
+          {burgerState.totalPrice ? burgerState.totalPrice : '0'}
           <CurrencyIcon type="primary" />
         </span>
 
         <div >
-          <Button onClick={toggleModal} disabled={!bun || ingredients.length === 0} htmlType="button" type="primary" size="large">
+          <Button onClick={handleClick} disabled={!bun || ingredients.length === 0} htmlType="button" type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
@@ -81,10 +104,5 @@ const BurgerConstructor = memo(({ toggleModal }) => {
     </section>
   );
 })
-
-BurgerConstructor.propTypes = {
-  // ingr: PropTypes.arrayOf(ingredientPropType).isRequired,
-  toggleModal: PropTypes.func.isRequired
-};
 
 export default BurgerConstructor

@@ -1,12 +1,17 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { useMemo, memo, useState } from 'react';
-import { ingredientPropType } from '../../utils/prop-types';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
+import { useSelector } from 'react-redux';
 
-const BurgerIngredients = memo(({data, toggleModal}) => {
+const BurgerIngredients = () => {
   const [current, setCurrent] = useState('bun');
+
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
+
+  const data = useSelector(store => store.ingredients.items)
 
   const [bun, sauce, main] = useMemo(() => {
     const bun = data.filter(el => el.type === 'bun');
@@ -21,8 +26,40 @@ const BurgerIngredients = memo(({data, toggleModal}) => {
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const getDistanceFromTop = (element) => {
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      return rect.top;
+    }
+    return Infinity;
+  };
+  const setActiveTabOnScroll = () => {
+    const bunDistance = Math.abs(getDistanceFromTop(bunRef.current));
+    const sauceDistance = Math.abs(getDistanceFromTop(sauceRef.current));
+    const mainDistance = Math.abs(getDistanceFromTop(mainRef.current));
+
+    if (bunDistance <= sauceDistance && bunDistance <= mainDistance) {
+      setCurrent('bun');
+    } else if (sauceDistance < bunDistance && sauceDistance < mainDistance) {
+      setCurrent('sauce');
+    } else {
+      setCurrent('main');
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setActiveTabOnScroll(container.scrollTop);
+    };
+    const container = document.querySelector('.scrollContainer');
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  });
+
   return (
-    <section className={`${styles.burgerIngredients} pt-10`}>
+    <section className={`pt-10`}>
       <h2 className='text text_type_main-large'>Соберите бургер</h2>
       <ul className={`${styles.tab_ul} pt-5`}>
         <li className={styles.tab_list}>
@@ -41,51 +78,43 @@ const BurgerIngredients = memo(({data, toggleModal}) => {
           </Tab>
         </li>
       </ul>
-      <div className={`${styles.ingredients_container} mt-10 custom-scroll`}>
-        <h2 id="bun" className={`text text_type_main-medium pb-6`}>
+      <div className={`${styles.ingredients_container} pt-10 custom-scroll scrollContainer`}>
+        <h2 ref={bunRef} id="bun" className={`text text_type_main-medium pb-6`}>
           Булки
         </h2>
         <ul className={styles.ingredients_ul}>
           {bun.map(el => {
-            return <Ingredient 
-            data={el} 
-            onClick={toggleModal}
-            key={el._id}
+            return <Ingredient
+              data={el}
+              key={el._id}
             />;
           })}
         </ul>
-        <h2 id="sauce" className={`text text_type_main-medium pt-10 pb-6`}>
+        <h2 ref={sauceRef} id="sauce" className={`text text_type_main-medium pt-10 pb-6`}>
           Соусы
         </h2>
         <ul className={styles.ingredients_ul}>
           {sauce.map(el => {
-            return <Ingredient 
-            data={el} 
-            onClick={toggleModal}
-            key={el._id}
+            return <Ingredient
+              data={el}
+              key={el._id}
             />;
           })}
         </ul>
-        <h2 id="main" className={`text text_type_main-medium pt-10 pb-6`}>
+        <h2 ref={mainRef} id="main" className={`text text_type_main-medium pt-10 pb-6`}>
           Начинки
         </h2>
         <ul className={styles.ingredients_ul}>
           {main.map(el => {
-            return <Ingredient 
-            data={el} 
-            onClick={toggleModal}
-            key={el._id}
+            return <Ingredient
+              data={el}
+              key={el._id}
             />;
           })}
         </ul>
       </div>
     </section>
   );
-})
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-  toggleModal: PropTypes.func.isRequired
-};
+}
 
 export default BurgerIngredients

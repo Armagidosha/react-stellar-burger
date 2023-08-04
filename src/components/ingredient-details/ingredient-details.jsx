@@ -1,9 +1,10 @@
+import { useSelector } from 'react-redux';
 import styles from './ingredient-details.module.css';
-import { ingredientPropType } from '../../utils/prop-types';
-import { memo } from 'react';
 
 
-const IngredientDetails = memo(({ ingredient }) => {
+
+const IngredientDetails = () => {
+  const ingredient = useSelector(store => store.modal.currentIngredient)
 
   return (
     <div className={styles.container}>
@@ -34,10 +35,6 @@ const IngredientDetails = memo(({ ingredient }) => {
       </ul>
     </div>
   )
-})
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropType.isRequired,
 }
 
 export default IngredientDetails

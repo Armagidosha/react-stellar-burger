@@ -1,12 +1,14 @@
 import styles from './order-details.module.css';
 import confirmed from '../../images/confirmed.svg';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-const OrderDetails = (order) => {
+const OrderDetails = () => {
+  const order = useSelector(store => store.order.items)
 
   return (
     <div className={styles.container}>
-      <h2 className={`${styles.order} text text_type_digits-large pt-30`}>{order.order.data}</h2>
+      <h2 className={`${styles.order} text text_type_digits-large pt-30`}>{order}</h2>
       <p className={`${styles.text} text text_type_main-medium pt-8`}>идентификатор заказа</p>
       <img className={`${styles.confirmed} mt-15`} src={confirmed} alt={'Иконка подтвержденного заказа'}></img>
       <p className={`${styles.subText} text text_type_main-default pt-15`}>Ваш заказ начали готовить</p>
@@ -14,13 +16,5 @@ const OrderDetails = (order) => {
     </div>
   )
 }
-
-OrderDetails.propTypes = {
-  order: PropTypes.shape({
-    order: PropTypes.shape({
-      data: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default OrderDetails

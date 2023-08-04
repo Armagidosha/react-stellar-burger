@@ -7,66 +7,61 @@ const checkResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-export const fetchIngredients = async setData => {
-  try {
-    setData(prevData => ({
-      ...prevData,
-      isLoading: true
-    }))
+export const fetchIngredients = () => {
+  return async function (dispatch) {
 
-    const response = await fetch(`${utils.url}ingredients`);
-    const data = await checkResponse(response);
+    try {
+      dispatch({
+        type: 'GET_ITEMS_REQUEST'
+      })
 
-    setData(prevData => ({
-      ...prevData,
-      isLoading: false,
-      hasError: false,
-      data: data.data
-    }))
-  } catch (error) {
-    console.error(`Ошибка: ${error}`);
+      const response = await fetch(`${utils.url}ingredients`);
+      const data = await checkResponse(response);
+      dispatch({
+        type: 'GET_ITEMS_SUCCESS',
+        items: data.data
+      })
 
-    setData(prevData => ({
-      ...prevData,
-      isLoading: false,
-      hasError: true
-    }))
+    } catch (error) {
+      console.error(`Ошибка: ${error}`);
+
+      dispatch({
+        type: 'GET_ITEMS_FAILED'
+      })
+    }
   }
 }
-//
-//
-export const postOrderData = async (postData, setOrderId) => {
-  try {
-    setOrderId(prevOrderId => ({
-      ...prevOrderId,
-      isLoading: true
-    }))
 
-    const response = await fetch(`${utils.url}orders`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      }
-    );
+export const postOrderData = (postData) => {
+  return async function (dispatch) {
+    try {
+      dispatch({
+        type: 'GET_ORDER_REQUEST'
+      })
 
-    const data = await checkResponse(response);
-    setOrderId(prevOrderId => ({
-      ...prevOrderId,
-      isLoading: false,
-      hasError: false,
-      data: data.order.number.toString()
-    })
-    )
-  } catch (error) {
-    console.error(`Ошибка: ${error}`);
+      const response = await fetch(`${utils.url}orders`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        }
+      );
 
-    setOrderId(prevOrderId => ({
-      ...prevOrderId,
-      isLoading: false,
-      hasError: true
-    }))
+      const data = await checkResponse(response);
+
+      dispatch({
+        type: 'GET_ORDER_SUCCESS',
+        items: data.order.number.toString()
+      })
+
+    } catch (error) {
+      console.error(`Ошибка: ${error}`);
+
+      dispatch({
+        type: 'GET_ORDER_FAILED'
+      })
+    }
   }
 }

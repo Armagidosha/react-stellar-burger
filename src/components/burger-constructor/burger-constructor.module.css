@@ -1,3 +1,9 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .burgerConstructor {
   width: 700px;
   max-height: calc(100vh - 290px);
@@ -5,20 +11,25 @@
 }
 
 .ingredients_ul {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  composes: flex;
   gap: 10px;
-  padding: 0;
+  padding: 10px 0;
   margin: 0;
+  margin-left: 60px;
   list-style: none;
+  width: 570px;
+  border-radius: 77px;
+  min-height: 530px;
 }
 
 .main_ingredients_ul {
-  composes: ingredients_ul;
+  composes: flex;
+  gap: 10px;
+  padding: 0 5px 0 0;
+  margin: 0;
+  list-style: none;
   overflow-y: auto;
   max-height: 364px;
-  min-width: 500px;
 }
 
 .ingredients_li {
@@ -26,13 +37,12 @@
   align-items: center;
   gap: 8px;
   margin-right: 3px;
-  min-width: 500px;
-  width: 96%;
-  max-width: 560px;
+  width: 97%;
+  max-width: 550px;
 }
 
 .list_element {
-  padding: 0 16px;
+  padding: 0 16px 0 0;
 }
 
 .sum_container {
@@ -44,9 +54,4 @@
 .sum {
   composes: sum_container;
   gap: 8px
-}
-
-.sign {
-  display: block;
-  width: 500px;
 }
