@@ -1,11 +1,11 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
 import { postOrderData } from '../../utils/api';
 
-const BurgerConstructor = memo(({ toggleModal }) => {
+const BurgerConstructor = () => {
   const burgerState = useSelector(store => store.burgerState);
   const dispatch = useDispatch()
 
@@ -103,6 +103,6 @@ const BurgerConstructor = memo(({ toggleModal }) => {
       </div>
     </section>
   );
-})
+}
 
 export default BurgerConstructor
