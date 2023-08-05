@@ -1,6 +1,5 @@
 import styles from './order-details.module.css';
 import confirmed from '../../images/confirmed.svg';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 const OrderDetails = () => {
