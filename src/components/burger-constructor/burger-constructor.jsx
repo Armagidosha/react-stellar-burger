@@ -1,13 +1,19 @@
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
-import { useDrop } from 'react-dnd';
-import { postOrderData } from '../../utils/api';
+import { DndProvider, useDrop } from 'react-dnd';
+import { postOrder } from '../../services/actions/order';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+import { BurgerMainItem } from '../burger-main-item/burger-main-item';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const BurgerConstructor = () => {
   const burgerState = useSelector(store => store.burgerState);
-  const dispatch = useDispatch()
+  const order = useSelector(store => store.order.items);
+  const modal = useSelector(store => store.modal);
+  const dispatch = useDispatch();
 
   const bun = useMemo(() => burgerState.ingredients.find(ingredient => ingredient.type === 'bun'), [burgerState.ingredients]);
   const ingredients = useMemo(() => burgerState.ingredients.filter(ingredient => ingredient.type !== 'bun'), [burgerState.ingredients]);
@@ -37,7 +43,7 @@ const BurgerConstructor = () => {
   }
 
   const handleClick = () => {
-    dispatch(postOrderData({
+    dispatch(postOrder({
       "ingredients": burgerState.ingredients.map(ingr => ingr._id)
     }))
 
@@ -45,6 +51,22 @@ const BurgerConstructor = () => {
       type: 'OPEN_ORDER_MODAL'
     })
   }
+
+  const moveElementInArray = (array, fromIndex, toIndex) => {
+    const newArray = [...array];
+    newArray.splice(toIndex, 0, newArray.splice(fromIndex, 1)[0]);
+    return newArray;
+  };
+
+  const moveCard = (dragIndex, hoverIndex) => {
+    const updatedIngredients = moveElementInArray(ingredients, dragIndex, hoverIndex);
+
+    dispatch({
+      type: 'UPDATE_INGREDIENTS',
+      item: updatedIngredients,
+    });
+  };
+
   return (
     <section className={`${styles.burgerConstructor} custom-scroll pt-25 pl-4`}>
       <ul ref={onDrop} style={{ backgroundColor }} className={styles.ingredients_ul}>
@@ -61,20 +83,13 @@ const BurgerConstructor = () => {
           }
         </li>
         <li className={styles.list_element}>
-          <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
-            {ingredients.map(ingredient =>
-              <li key={ingredient.uuid} className={styles.ingredients_li}>
-                <DragIcon />
-                <ConstructorElement
-                  isLocked={false}
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
-                  handleClose={() => dispatch({ type: 'REMOVE', item: ingredient })}
-                />
-              </li>
-            )}
-          </ul>
+          <DndProvider backend={HTML5Backend}>
+            <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
+              {ingredients.map((ingredient, index) =>
+                <BurgerMainItem key={ingredient.uuid} ingredient={ingredient} _id={ingredient._id} moveCard={moveCard} index={index} />
+              )}
+            </ul>
+          </DndProvider>
         </li>
         <li className={styles.list_element}>
           {bun &&
@@ -101,6 +116,11 @@ const BurgerConstructor = () => {
           </Button>
         </div>
       </div>
+      {modal.isOpened && !order.orderRequest && modal.currentModal === 'order' &&
+        <Modal>
+          <OrderDetails />
+        </Modal>
+      }
     </section>
   );
 }

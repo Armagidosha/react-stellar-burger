@@ -32,15 +32,6 @@
   max-height: 364px;
 }
 
-.ingredients_li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-right: 3px;
-  width: 97%;
-  max-width: 550px;
-}
-
 .list_element {
   padding: 0 16px 0 0;
 }

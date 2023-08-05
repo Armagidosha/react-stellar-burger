@@ -1,4 +1,4 @@
-import { ADD, REMOVE } from "../actions/burger";
+import { ADD, REMOVE, UPDATE_INGREDIENTS } from "../actions/burger";
 
 const initialState = {
   ingredients: [],
@@ -11,13 +11,12 @@ export const burgerReducer = (state = initialState, action) => {
     case ADD: {
       const isBun = action.item.type === 'bun';
       const prevBun = state.ingredients.find(ingredient => ingredient.type === 'bun');
-
       const ingredientId = action.item._id;
       const currentCount = state.ingredientCounts[ingredientId] || 0;
-      const newIngredientCounts = {
-        ...state.ingredientCounts,
-        [ingredientId]: currentCount + 1,
-      };
+      
+      if (isBun && currentCount >= 1) {
+        return state;
+      }
 
       return {
         ...state,
@@ -27,7 +26,16 @@ export const burgerReducer = (state = initialState, action) => {
         totalPrice: isBun
           ? prevBun ? state.totalPrice + action.item.price - prevBun.price : state.totalPrice + action.item.price
           : state.totalPrice + action.item.price,
-        ingredientCounts: newIngredientCounts,
+        ingredientCounts: isBun
+          ? {
+            ...state.ingredientCounts,
+            [prevBun?._id]: 0,
+            [ingredientId]: currentCount + 1,
+          }
+          : {
+            ...state.ingredientCounts,
+            [ingredientId]: currentCount + 1,
+          },
       };
     }
     case REMOVE: {
@@ -43,6 +51,13 @@ export const burgerReducer = (state = initialState, action) => {
         ingredients: state.ingredients.filter(ingredient => ingredient.uuid !== action.item.uuid),
         totalPrice: state.totalPrice - action.item.price,
         ingredientCounts: newIngredientCounts,
+      };
+    }
+    case UPDATE_INGREDIENTS: {
+      const currentBuns = state.ingredients.filter(ingredient => ingredient.type === 'bun');
+      return {
+        ...state,
+        ingredients: [...currentBuns, ...action.item],
       };
     }
     default: {
