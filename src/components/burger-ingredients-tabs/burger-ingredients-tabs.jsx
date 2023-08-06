@@ -8,15 +8,15 @@ export const BurgerTab = ({ bunRef, sauceRef, mainRef }) => {
   const getDistanceFromTop = (element) => {
     if (element) {
       const rect = element.getBoundingClientRect();
-      return rect.top;
+      return rect.top - 130;
     }
     return Infinity;
   };
 
   const setActiveTabOnScroll = () => {
-    const bunDistance = Math.abs(getDistanceFromTop(bunRef.current)) - 300;
-    const sauceDistance = Math.abs(getDistanceFromTop(sauceRef.current)) - 100;
-    const mainDistance = Math.abs(getDistanceFromTop(mainRef.current)) - 100;
+    const bunDistance = Math.abs(getDistanceFromTop(bunRef.current));
+    const sauceDistance = Math.abs(getDistanceFromTop(sauceRef.current));
+    const mainDistance = Math.abs(getDistanceFromTop(mainRef.current));
 
     if (bunDistance <= sauceDistance && bunDistance <= mainDistance) {
       setCurrent('bun');
