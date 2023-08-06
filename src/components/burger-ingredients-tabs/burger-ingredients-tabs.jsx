@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from './burger-tab-items.module.css';
+import styles from './burger-ingredients-tabs.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export const BurgerTab = ({ bunRef, sauceRef, mainRef }) => {
@@ -14,9 +14,9 @@ export const BurgerTab = ({ bunRef, sauceRef, mainRef }) => {
   };
 
   const setActiveTabOnScroll = () => {
-    const bunDistance = Math.abs(getDistanceFromTop(bunRef.current));
-    const sauceDistance = Math.abs(getDistanceFromTop(sauceRef.current));
-    const mainDistance = Math.abs(getDistanceFromTop(mainRef.current));
+    const bunDistance = Math.abs(getDistanceFromTop(bunRef.current)) - 300;
+    const sauceDistance = Math.abs(getDistanceFromTop(sauceRef.current)) - 100;
+    const mainDistance = Math.abs(getDistanceFromTop(mainRef.current)) - 100;
 
     if (bunDistance <= sauceDistance && bunDistance <= mainDistance) {
       setCurrent('bun');

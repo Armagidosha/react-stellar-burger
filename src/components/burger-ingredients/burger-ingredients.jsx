@@ -4,7 +4,7 @@ import Ingredient from '../ingredient/ingredient';
 import { useSelector } from 'react-redux';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { BurgerTab } from '../burger-tab-items/burger-tab-items';
+import { BurgerTab } from '../burger-ingredients-tabs/burger-ingredients-tabs';
 
 const BurgerIngredients = () => {
   const bunRef = useRef(null);
