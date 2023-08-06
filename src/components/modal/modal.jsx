@@ -3,40 +3,37 @@ import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useRef, memo } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 const modalRoot = document.getElementById('modal');
 
-const Modal = memo(({ children, toggleModal }) => {
+const Modal = ({ children }) => {
+  const modalOverlayRef = useRef(null);
+  const dispatch = useDispatch()
+  const toggleModal = useCallback(() => {
+    dispatch({
+      type: 'CLOSE'
+    })
+  }, [dispatch])
 
-  const modalOverlayRef = useRef(null)
+  const handleButtonClose = () => {
+    toggleModal();
+  };
 
-  const handleButtonClose = (evt) => {
-    if (evt.target) {
-      toggleModal()
-    }
-  }
-
-  const handleClickClose = (evt) => {
-    console.log(modalOverlayRef.current)
-    if (evt.target === modalOverlayRef.current) {
-      toggleModal()
-    }
-  }
 
   useEffect(() => {
     const handleEscClose = (evt) => {
       if (evt.key === 'Escape') {
-        toggleModal()
+        toggleModal();
       }
-    }
-    
-    document.addEventListener('keydown', handleEscClose)
+    };
 
+    document.addEventListener('keydown', handleEscClose);
     return () => {
-      document.removeEventListener('click', handleClickClose)
-    }
-  })
+      document.removeEventListener('keydown', handleEscClose);
+    };
+  });
 
   return createPortal(
     <>
@@ -48,11 +45,10 @@ const Modal = memo(({ children, toggleModal }) => {
     </>,
     modalRoot
   )
-})
+}
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  toggleModal: PropTypes.func.isRequired,
 };
 
 export default Modal

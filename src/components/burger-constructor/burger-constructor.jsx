@@ -1,138 +1,128 @@
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { memo } from 'react';
-import { ingredientPropType } from '../../utils/prop-types';
+import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
+import { DndProvider, useDrop } from 'react-dnd';
+import { postOrder } from '../../services/actions/order';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+import { BurgerMainItem } from '../burger-main-item/burger-main-item';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-const BurgerConstructor = memo(({ data, toggleModal }) => {
+const BurgerConstructor = () => {
+  const burgerState = useSelector(store => store.burgerState);
+  const order = useSelector(store => store.order.items);
+  const modal = useSelector(store => store.modal);
+  const dispatch = useDispatch();
+
+  const bun = useMemo(() => burgerState.ingredients.find(ingredient => ingredient.type === 'bun'), [burgerState.ingredients]);
+  const ingredients = useMemo(() => burgerState.ingredients.filter(ingredient => ingredient.type !== 'bun'), [burgerState.ingredients]);
+
+  const [{ canDrop, isOver }, onDrop] = useDrop({
+    accept: 'ingredient',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop()
+    })
+  })
+
+  const isActive = canDrop && isOver
+  let backgroundColor = ''
+  if (isActive) {
+    backgroundColor = '#8585AD'
+  } else if (canDrop) {
+    backgroundColor = '#222'
+  }
+
+  const setLocked = () => {
+    if (ingredients.length === 0) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const handleClick = () => {
+    dispatch(postOrder({
+      "ingredients": burgerState.ingredients.map(ingr => ingr._id)
+    }))
+
+    dispatch({
+      type: 'OPEN_ORDER_MODAL'
+    })
+  }
+
+  const moveElementInArray = (array, fromIndex, toIndex) => {
+    const newArray = [...array];
+    newArray.splice(toIndex, 0, newArray.splice(fromIndex, 1)[0]);
+    return newArray;
+  };
+
+  const moveCard = (dragIndex, hoverIndex) => {
+    const updatedIngredients = moveElementInArray(ingredients, dragIndex, hoverIndex);
+
+    dispatch({
+      type: 'UPDATE_INGREDIENTS',
+      item: updatedIngredients,
+    });
+  };
 
   return (
     <section className={`${styles.burgerConstructor} custom-scroll pt-25 pl-4`}>
-      <ul className={styles.ingredients_ul}>
+      <ul ref={onDrop} style={{ backgroundColor }} className={styles.ingredients_ul}>
         <li className={styles.list_element}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${data[7].name} (Верх)`}
-            price={data[7].price}
-            thumbnail={data[7].image}
-          />
+          {bun &&
+            <ConstructorElement
+              type="top"
+              isLocked={setLocked()}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image}
+              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
+            />
+          }
         </li>
         <li className={styles.list_element}>
-
-          <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[8].name}
-                price={data[8].price}
-                thumbnail={data[8].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[12].name}
-                price={data[12].price}
-                thumbnail={data[12].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[11].name}
-                price={data[11].price}
-                thumbnail={data[11].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[8].name}
-                price={data[8].price}
-                thumbnail={data[8].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[12].name}
-                price={data[12].price}
-                thumbnail={data[12].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[11].name}
-                price={data[11].price}
-                thumbnail={data[11].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[8].name}
-                price={data[8].price}
-                thumbnail={data[8].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[12].name}
-                price={data[12].price}
-                thumbnail={data[12].image}
-              />
-            </li>
-            <li className={styles.ingredients_li}>
-              <DragIcon />
-              <ConstructorElement
-                isLocked={false}
-                text={data[11].name}
-                price={data[11].price}
-                thumbnail={data[11].image}
-              />
-            </li>
-          </ul>
+          <DndProvider backend={HTML5Backend}>
+            <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
+              {ingredients.map((ingredient, index) =>
+                <BurgerMainItem key={ingredient.uuid} ingredient={ingredient} _id={ingredient._id} moveCard={moveCard} index={index} />
+              )}
+            </ul>
+          </DndProvider>
         </li>
         <li className={styles.list_element}>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${data[7].name} (Низ)`}
-            price={data[7].price}
-            thumbnail={data[7].image}
-          />
+          {bun &&
+            <ConstructorElement
+              type="bottom"
+              isLocked={setLocked()}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.image}
+              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
+            />
+          }
         </li>
       </ul>
       <div className={`${styles.sum_container} pt-10 pr-4`}>
         <span className={`${styles.sum} text text_type_digits-medium pr-10`}>
-          {'99999'}
+          {burgerState.totalPrice ? burgerState.totalPrice : '0'}
           <CurrencyIcon type="primary" />
         </span>
 
-        <div onClick={() => toggleModal()}>
-          <Button htmlType="button" type="primary" size="large">
+        <div >
+          <Button onClick={handleClick} disabled={!bun || ingredients.length === 0} htmlType="button" type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
       </div>
+      {modal.isOpened && !order.orderRequest && modal.currentModal === 'order' &&
+        <Modal>
+          <OrderDetails />
+        </Modal>
+      }
     </section>
   );
-})
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-  toggleModal: PropTypes.func.isRequired
-};
+}
 
 export default BurgerConstructor

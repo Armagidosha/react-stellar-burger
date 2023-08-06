@@ -1,63 +1,31 @@
-import { useEffect, useState } from "react";
-import { utils } from "../../utils/utils";
+import { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
-import OrderDetails from "../order-details/order-details";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
+import { useDispatch, useSelector } from "react-redux";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
-  const [data, setData] = useState([]);
-  const [hasErrors, setHasErrors] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentIngr, setCurrentIngr] = useState(null)
-  const [currentModal, setCurrentModal] = useState('')
+  const dispatch = useDispatch();
+  const data = useSelector(store => store.ingredients);
 
   useEffect(() => {
-    const getResponse = (res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    };
-
-    fetch(utils.url)
-      .then(getResponse)
-      .then((data) => {
-        setData(data.data);
-        setHasErrors(false);
-      })
-      .catch((err) => {
-        setHasErrors(true);
-        console.error(`Ошибка: ${err}`);
-      });
-  }, []);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  }
-
-  const openIngredientModal = (ingr) => {
-    setCurrentIngr(ingr);
-    toggleModal();
-    setCurrentModal('ingredient');
-  }
-
-  const openOrderModal = () => {
-    toggleModal();
-    setCurrentModal('order');
-  }
+    dispatch(getIngredients())
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.main}>
-        {data.length && !hasErrors ? (
+        {data.items.length && !data.itemsFailed ? (
           <>
-            <BurgerIngredients data={data} toggleModal={openIngredientModal} />
-            <BurgerConstructor data={data} toggleModal={openOrderModal} />
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </DndProvider>
           </>
         ) : (
           <span className="text text_type_main-medium mt-5">
@@ -65,14 +33,6 @@ function App() {
           </span>
         )}
       </main>
-      {isOpen && (
-        <Modal toggleModal={toggleModal}>
-          {currentModal === 'ingredient' ?
-            <IngredientDetails ingredient={currentIngr} /> :
-            <OrderDetails />
-          }
-        </Modal>
-      )}
     </div>
   );
 }
