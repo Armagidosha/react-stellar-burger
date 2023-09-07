@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './not-found.module.css';
 
-export const NotFound404 = () => {
+const NotFound404 = () => {
   return (
     <section className={styles.container}>
       <span className={`${styles.error} text_type_digits-large pt-20`}>404</span>
@@ -10,3 +10,5 @@ export const NotFound404 = () => {
     </section>
   )
 }
+
+export default NotFound404;

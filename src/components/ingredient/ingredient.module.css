@@ -1,3 +1,7 @@
+.link {
+  text-decoration: none;
+  color: currentColor
+}
 .container {
   position: relative;
   display: flex;

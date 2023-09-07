@@ -15,6 +15,11 @@
 }
 
 .link {
-  color: #8585AD;
+  color: #4C4CFF;
   text-decoration: none;
+  transition: opacity .2s linear;
+}
+
+.link:hover {
+  opacity: .75;
 }

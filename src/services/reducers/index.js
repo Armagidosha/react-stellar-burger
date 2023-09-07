@@ -1,12 +1,12 @@
 import { combineReducers } from "redux"
 import { ingredientsReducer, } from "./ingredients";
 import { burgerReducer } from "./burgerReducer";
-import { modalReducer } from "./modalReducer";
 import { orderReducer } from "./order";
+import { userReducer } from "./userReducer";
 
 export const rootReducer = combineReducers({
   burgerState: burgerReducer,
   ingredients: ingredientsReducer,
-  modal: modalReducer,
-  order: orderReducer
+  order: orderReducer,
+  user: userReducer
 })
