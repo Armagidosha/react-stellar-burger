@@ -1,10 +1,10 @@
 import { useDispatch } from 'react-redux';
 import styles from './profileAnchors.module.css';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { postLogout } from '../../services/actions/user';
+import { path } from '../../utils/utils';
 
 const ProfileAnchors = () => {
-  const location = useLocation().pathname;
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(postLogout())
@@ -12,26 +12,35 @@ const ProfileAnchors = () => {
 
   return (
     <ul className={styles.links_ul}>
-    <li className={`${styles.link_li} text text_type_main-medium`}>
-      <Link
-        to={'/profile'}
-        className={`${styles.link} ${location === '/profile' ? styles.linkActive : ''}`}>
-        Профиль
-      </Link>
-    </li>
-    <li className={`${styles.link_li} text text_type_main-medium`}>
-      <Link
-        to={'/profile/orders'}
-        className={`${styles.link} ${location === '/profile/orders' ? styles.linkActive : ''}`}>
-        История заказов
-      </Link>
-    </li>
-    <li className={`${styles.link_li}`}>
-      <button onClick={handleLogout} className={`${styles.logoutButton} ${styles.link} text text_type_main-medium`}>
-        Выход
-      </button>
-    </li >
-  </ul>
+      <li className={`${styles.link_li} text text_type_main-medium`}>
+        <NavLink
+          to={path.profile}
+          end
+          className={styles.link}>
+          {({ isActive }) =>
+            <p className={`${isActive ? styles.linkActive : ''} ${styles.linkText}`}>
+              Профиль
+            </p>
+          }
+        </NavLink>
+      </li>
+      <li className={`${styles.link_li} text text_type_main-medium`}>
+        <NavLink
+          to={path.profileOrders}
+          className={styles.link}>
+          {({ isActive }) =>
+            <p className={`${isActive ? styles.linkActive : ''} ${styles.linkText}`}>
+              История заказов
+            </p>
+          }
+        </NavLink>
+      </li>
+      <li className={`${styles.link_li}`}>
+        <button onClick={handleLogout} className={`${styles.logoutButton} ${styles.link} text text_type_main-medium`}>
+          Выход
+        </button>
+      </li >
+    </ul>
   )
 }
 
