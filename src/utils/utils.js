@@ -5,10 +5,14 @@ export const utils = {
 export const path = {
   login: '/login',
   profile: '/profile',
+  profileOrders: '/profile/orders',
   forgot: '/forgot-password',
   recover: '/recover-password',
   register: '/register',
   feed: '/feed',
+  order: '/order',
+  ingredientDetails: '/ingredients/',
+
 }
 
 export const setLocalStorage = (data) => {

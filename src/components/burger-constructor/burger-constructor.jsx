@@ -13,6 +13,8 @@ import { path } from '../../utils/utils';
 const BurgerConstructor = () => {
   const user = useSelector(store => store.user.user);
   const burgerState = useSelector(store => store.burgerState);
+  const order = useSelector(store => store.order);
+
   const dispatch = useDispatch();
 
   const bun = useMemo(() => burgerState.ingredients.find(ingredient => ingredient.type === 'bun'), [burgerState.ingredients]);
@@ -68,7 +70,7 @@ const BurgerConstructor = () => {
         dispatch({
           type: 'CLEAR_STASH'
         })
-        navigate('/order', { state: { background: location } })
+        navigate(path.order, { state: { background: location } })
       }
       )
     } else {
@@ -120,8 +122,8 @@ const BurgerConstructor = () => {
         </span>
 
         <div>
-          <Button onClick={handleClickPost} disabled={!bun || ingredients.length === 0} htmlType="button" type="primary" size="large">
-            Оформить заказ
+          <Button onClick={handleClickPost} disabled={!bun || ingredients.length === 0 || order.orderRequest} htmlType="button" type="primary" size="large">
+            {order.orderRequest ? 'Оформление...' : 'Оформить заказ'}
           </Button>
         </div>
       </div>

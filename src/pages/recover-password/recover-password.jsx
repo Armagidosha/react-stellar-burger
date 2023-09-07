@@ -4,7 +4,6 @@ import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burg
 import { useInput } from '../../utils/hooks';
 import { path } from '../../utils/utils';
 import { recoverForgotPassword } from '../../utils/api';
-import { useEffect } from 'react';
 
 const RecoverPasswordPage = () => {
   const navigate = useNavigate();
@@ -21,32 +20,29 @@ const RecoverPasswordPage = () => {
     })
   }
 
-  useEffect(() => {
-    return localStorage.removeItem('recover-password-access')
-  })
-
   return localStorage.getItem('recover-password-access') ? (
-    <form onSubmit={e => onSubmit(e)} className={styles.container}>
+    <form onSubmit={onSubmit} className={styles.container}>
       <h2 className={`${styles.heading} text text_type_main-medium`}>
         Восстановление пароля
       </h2>
       <PasswordInput
-        placeholder={'Пароль'}
+        placeholder='Пароль'
         value={inputs.password}
-        onChange={e => handleChange(e)}
-        name={'password'}
+        onChange={handleChange}
+        name='password'
       />
       <Input
         placeholder={'Введите код из письма'}
-        type={'text'}
+        type='text'
         value={inputs.token}
-        onChange={e => handleChange(e)}
-        name={'token'}
+        onChange={handleChange}
+        name='token'
       />
       <Button
-        htmlType={'submit'}
-        type={'primary'}
-        size={'medium'}
+        disabled={!inputs.password.length || !inputs.token.length}
+        htmlType='submit'
+        type='primary'
+        size='medium'
       >
         Сохранить
       </Button>

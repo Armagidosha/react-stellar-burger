@@ -13,14 +13,14 @@ export const fetchIngredientsFromAPI = async () => {
 }
 
 export const postOrderDataToAPI = async (postData) => {
-  const response = await fetch(`${utils.url}orders`, {
+  return fetchWithRefresh(`${utils.url}orders`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem("accessToken")
     },
     body: JSON.stringify(postData)
   });
-  return checkResponse(response);
 }
 
 export const refreshToken = async () => {

@@ -28,32 +28,32 @@ const ProfilePage = () => {
           изменить&nbsp;свои персональные данные
         </p>
       </div>
-      <form onSubmit={e => onSubmit(e)} className={styles.form}>
+      <form onSubmit={onSubmit} className={styles.form}>
         <Input
-          placeholder={'Имя'}
+          placeholder='Имя'
           value={inputs.name}
-          onChange={e => handleChange(e)}
-          name={'name'}
+          onChange={handleChange}
+          name='name'
           extraClass='mb-6' 
           />
         <EmailInput
-          placeholder={'Логин'}
+          placeholder='Логин'
           value={inputs.email}
-          onChange={e => handleChange(e)}
-          name={'email'}
+          onChange={handleChange}
+          name='email'
           extraClass='mb-6' />
         <PasswordInput
-          placeholder={'Пароль'}
+          placeholder='Пароль'
           value={inputs.password}
-          onChange={e => handleChange(e)}
-          name={'password'}
+          onChange={handleChange}
+          name='password'
         />
         <div className={`${styles.buttonContainer} pt-6`}>
           <Button
             disabled={!inputs.email.length || !inputs.name.length || inputs.password.length < 6}
-            htmlType={'submit'}
-            type={'primary'}
-            size={'medium'}
+            htmlType='submit'
+            type='primary'
+            size='medium'
             extraClass={styles.button}
           >
             Сохранить

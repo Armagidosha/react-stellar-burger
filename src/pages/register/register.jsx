@@ -20,33 +20,34 @@ const RegisterPage = () => {
   }
 
   return (
-    <form onSubmit={e => submit(e)} className={styles.container}>
+    <form onSubmit={submit} className={styles.container}>
       <h2 className={`${styles.heading} text text_type_main-medium`}>
         Регистрация
       </h2>
       <Input
-        placeholder={'Имя'}
-        type={'text'}
+        placeholder='Имя'
+        type='text'
         value={inputs.name}
-        onChange={e => handleChange(e)}
-        name={'name'}
+        onChange={handleChange}
+        name='name'
       />
       <EmailInput
-        placeholder={'E-mail'}
+        placeholder='E-mail'
         value={inputs.email}
-        onChange={e => handleChange(e)}
-        name={'email'}
+        onChange={handleChange}
+        name='email'
       />
       <PasswordInput
-        placeholder={'Пароль'}
+        placeholder='Пароль'
         value={inputs.password}
-        onChange={e => handleChange(e)}
-        name={'password'}
+        onChange={handleChange}
+        name='password'
       />
       <Button
-        htmlType={'submit'}
-        type={'primary'}
-        size={'medium'}
+        disabled={!inputs.email.length || !inputs.name.length || inputs.password.length < 6}
+        htmlType='submit'
+        type='primary'
+        size='medium'
       >
         Зарегистрироваться
       </Button>

@@ -7,13 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from "react-router-dom";
+import { path } from "../../utils/utils";
 
 const Ingredient = memo(({ data }) => {
   const dispatch = useDispatch()
   const ingredientCounts = useSelector((store) => store.burgerState.ingredientCounts)
+  const order = useSelector(store => store.order.orderRequest)
   const [, dragRef] = useDrag({
     type: 'ingredient',
-    item: { data },
+    item: { data }, 
+    canDrag: () => {
+      return !order
+    },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
@@ -35,7 +40,7 @@ const Ingredient = memo(({ data }) => {
   return (
     <Link
       key={ingredientId}
-      to={`/ingredients/${ingredientId}`}
+      to={`${path.ingredientDetails}${ingredientId}`}
       state={{ background: location }}
       className={styles.link}
     >

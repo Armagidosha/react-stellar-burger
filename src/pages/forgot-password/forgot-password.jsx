@@ -22,21 +22,21 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <form onSubmit={e => onSubmit(e)} className={styles.container}>
+    <form onSubmit={onSubmit} className={styles.container}>
       <h2 className={`${styles.heading} text text_type_main-medium`}>
         Восстановление пароля
       </h2>
       <EmailInput
-        placeholder={'Укажите e-mail'}
+        placeholder='Укажите e-mail'
         value={inputs.email}
-        onChange={e => handleChange(e)}
-        name={'email'}
+        onChange={handleChange}
+        name='email'
       />
       <Button
         disabled={inputs.email.length < 3}
-        htmlType={'submit'}
-        type={'primary'}
-        size={'medium'}
+        htmlType='submit'
+        type='primary'
+        size='medium'
       >
         Восстановить
       </Button>

@@ -20,26 +20,27 @@ const LoginPage = () => {
   }
 
   return (
-    <form onSubmit={e => onSubmit(e)} className={styles.container}>
+    <form onSubmit={onSubmit} className={styles.container}>
       <h2 className={`${styles.heading} text text_type_main-medium`}>
         Вход
       </h2>
       <EmailInput
-        placeholder={'E-mail'}
+        placeholder='E-mail'
         value={inputs.email}
-        onChange={e => handleChange(e)}
-        name={'email'}
+        onChange={handleChange}
+        name='email'
       />
       <PasswordInput
-        placeholder={'Пароль'}
+        placeholder='Пароль'
         value={inputs.password}
-        onChange={e => handleChange(e)}
-        name={'password'}
+        onChange={handleChange}
+        name='password'
       />
       <Button
-        htmlType={'submit'}
-        type={'primary'}
-        size={'medium'}
+        disabled={!inputs.email.length || inputs.password.length < 6}
+        htmlType='submit'
+        type='primary'
+        size='medium'
       >
         Войти
       </Button>

@@ -22,6 +22,7 @@ import RecoverPasswordPage from "../../pages/recover-password/recover-password";
 import ProfilePage from "../../pages/profile/profile";
 import HomePage from "../../pages/home/HomePage";
 import ProfileOrdersPage from "../../pages/profile-orders/profile-orders";
+import { path } from "../../utils/utils";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,24 +45,23 @@ function App() {
         <DndProvider backend={HTML5Backend}>
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
-
-            <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
-            <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
-            <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
-            <Route path="/recover-password" element={<OnlyUnAuth component={<RecoverPasswordPage />} />} />
-            <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
-            <Route path="/profile/orders" element={<OnlyAuth component={<ProfileOrdersPage />} />} />
-            <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />
+            <Route path={path.register} element={<OnlyUnAuth component={<RegisterPage />} />} />
+            <Route path={path.login} element={<OnlyUnAuth component={<LoginPage />} />} />
+            <Route path={path.forgot} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
+            <Route path={path.recover} element={<OnlyUnAuth component={<RecoverPasswordPage />} />} />
+            <Route path={path.profile} element={<OnlyAuth component={<ProfilePage />} />} />
+            <Route path={path.profileOrders} element={<OnlyAuth component={<ProfileOrdersPage />} />} />
+            <Route path={`${path.ingredientDetails}:ingredientId`} element={<IngredientDetails />} />
             <Route path="*" element={<NotFound404 />} />
           </Routes>
           {background && (
             <Routes>
-              <Route path='/order' element={
+              <Route path={path.order} element={
                 <Modal>
                   <OrderDetails />
                 </Modal>
               } />
-              <Route path='/ingredients/:ingredientId' element={
+              <Route path={`${path.ingredientDetails}:ingredientId`} element={
                 <Modal>
                   <IngredientDetails />
                 </Modal>
