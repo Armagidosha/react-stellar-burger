@@ -64,8 +64,12 @@ const BurgerConstructor = () => {
     if (user) {
       dispatch(postOrder({
         "ingredients": burgerState.ingredients.map(ingr => ingr._id)
-      })).then(() =>
-      navigate('/order', { state: { background: location } })
+      })).then(() => {
+        dispatch({
+          type: 'CLEAR_STASH'
+        })
+        navigate('/order', { state: { background: location } })
+      }
       )
     } else {
       navigate(path.login)
