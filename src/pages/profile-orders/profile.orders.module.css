@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 1240px;
+  padding-top: 120px;
+}
+
+.sub {
+  max-width: 320px;
+  color: #8585AD;
+}

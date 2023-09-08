@@ -4,19 +4,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
 import { DndProvider, useDrop } from 'react-dnd';
 import { postOrder } from '../../services/actions/order';
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BurgerMainItem } from '../burger-main-item/burger-main-item';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { path } from '../../utils/utils';
+
 
 const BurgerConstructor = () => {
+  const user = useSelector(store => store.user.user);
   const burgerState = useSelector(store => store.burgerState);
-  const order = useSelector(store => store.order.items);
-  const modal = useSelector(store => store.modal);
+  const order = useSelector(store => store.order);
+
   const dispatch = useDispatch();
 
   const bun = useMemo(() => burgerState.ingredients.find(ingredient => ingredient.type === 'bun'), [burgerState.ingredients]);
   const ingredients = useMemo(() => burgerState.ingredients.filter(ingredient => ingredient.type !== 'bun'), [burgerState.ingredients]);
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [{ canDrop, isOver }, onDrop] = useDrop({
     accept: 'ingredient',
@@ -42,16 +47,6 @@ const BurgerConstructor = () => {
     }
   }
 
-  const handleClick = () => {
-    dispatch(postOrder({
-      "ingredients": burgerState.ingredients.map(ingr => ingr._id)
-    }))
-
-    dispatch({
-      type: 'OPEN_ORDER_MODAL'
-    })
-  }
-
   const moveElementInArray = (array, fromIndex, toIndex) => {
     const newArray = [...array];
     newArray.splice(toIndex, 0, newArray.splice(fromIndex, 1)[0]);
@@ -66,6 +61,22 @@ const BurgerConstructor = () => {
       item: updatedIngredients,
     });
   };
+
+  const handleClickPost = () => {
+    if (user) {
+      dispatch(postOrder({
+        "ingredients": burgerState.ingredients.map(ingr => ingr._id)
+      })).then(() => {
+        dispatch({
+          type: 'CLEAR_STASH'
+        })
+        navigate(path.order, { state: { background: location } })
+      }
+      )
+    } else {
+      navigate(path.login)
+    }
+  }
 
   return (
     <section className={`${styles.burgerConstructor} custom-scroll pt-25 pl-4`}>
@@ -110,17 +121,12 @@ const BurgerConstructor = () => {
           <CurrencyIcon type="primary" />
         </span>
 
-        <div >
-          <Button onClick={handleClick} disabled={!bun || ingredients.length === 0} htmlType="button" type="primary" size="large">
-            Оформить заказ
+        <div>
+          <Button onClick={handleClickPost} disabled={!bun || ingredients.length === 0 || order.orderRequest} htmlType="button" type="primary" size="large">
+            {order.orderRequest ? 'Оформление...' : 'Оформить заказ'}
           </Button>
         </div>
       </div>
-      {modal.isOpened && !order.orderRequest && modal.currentModal === 'order' &&
-        <Modal>
-          <OrderDetails />
-        </Modal>
-      }
     </section>
   );
 }

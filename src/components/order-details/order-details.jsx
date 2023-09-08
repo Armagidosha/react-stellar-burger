@@ -3,7 +3,7 @@ import confirmed from '../../images/confirmed.svg';
 import { useSelector } from 'react-redux';
 
 const OrderDetails = () => {
-  const order = useSelector(store => store.order.items)
+  const order = useSelector(store => store.order.items);
 
   return (
     <div className={styles.container}>

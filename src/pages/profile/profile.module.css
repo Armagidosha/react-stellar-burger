@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 1240px;
+  padding-top: 120px;
+}
+
+.sub {
+  max-width: 320px;
+  color: #8585AD;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 480px;
+}
+
+.button {
+  width: 300px;
+}

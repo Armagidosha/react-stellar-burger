@@ -4,23 +4,20 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useRef, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const modalRoot = document.getElementById('modal');
 
 const Modal = ({ children }) => {
+  const navigate = useNavigate();
   const modalOverlayRef = useRef(null);
-  const dispatch = useDispatch()
   const toggleModal = useCallback(() => {
-    dispatch({
-      type: 'CLOSE'
-    })
-  }, [dispatch])
+    navigate(-1)
+  }, [navigate])
 
   const handleButtonClose = () => {
     toggleModal();
   };
-
 
   useEffect(() => {
     const handleEscClose = (evt) => {

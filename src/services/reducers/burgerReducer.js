@@ -1,4 +1,4 @@
-import { ADD, REMOVE, UPDATE_INGREDIENTS } from "../actions/burger";
+import { ADD, CLEAR_STASH, REMOVE, UPDATE_INGREDIENTS } from "../actions/burger";
 
 const initialState = {
   ingredients: [],
@@ -59,6 +59,13 @@ export const burgerReducer = (state = initialState, action) => {
         ...state,
         ingredients: [...currentBuns, ...action.item],
       };
+    }
+    case CLEAR_STASH: {
+      return {
+        ingredients: [],
+        totalPrice: null,
+        ingredientCounts: {} 
+      }
     }
     default: {
       return state;

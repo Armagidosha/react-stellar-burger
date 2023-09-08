@@ -2,8 +2,6 @@ import { useMemo, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import { useSelector } from 'react-redux';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
 import { BurgerTab } from '../burger-ingredients-tabs/burger-ingredients-tabs';
 
 const BurgerIngredients = () => {
@@ -12,7 +10,6 @@ const BurgerIngredients = () => {
   const mainRef = useRef(null);
 
   const data = useSelector(store => store.ingredients.items);
-  const modal = useSelector(store => store.modal)
   
   const [bun, sauce, main] = useMemo(() => {
     const bun = data.filter(el => el.type === 'bun');
@@ -60,11 +57,6 @@ const BurgerIngredients = () => {
           })}
         </ul>
       </div>
-      {modal.isOpened && modal.currentModal === 'ingredient' &&
-        <Modal>
-          <IngredientDetails />
-        </Modal>
-      }
     </section>
   );
 }

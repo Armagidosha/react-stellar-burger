@@ -1,0 +1,35 @@
+.links_ul {
+  margin: 0;
+  list-style: none;
+}
+
+.link_li {
+  display: flex;
+  align-items: center;
+  width: 320px;
+  height: 64px;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.linkText {
+  margin: 0;
+}
+
+.link {
+  color: #8585AD;
+  text-decoration: none;
+  transition: color .3s linear;
+}
+
+.link:hover {
+  color: white;
+}
+
+.linkActive {
+  color: white
+}
