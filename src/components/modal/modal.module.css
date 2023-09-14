@@ -1,6 +1,6 @@
 .container {
   position: fixed;
-  width: 720px;
+  max-width: 720px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

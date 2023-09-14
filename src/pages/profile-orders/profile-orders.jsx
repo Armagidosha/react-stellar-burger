@@ -1,17 +1,37 @@
 import styles from './profile.orders.module.css';
 import ProfileAnchors from "../../components/profile/profileAnchors";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { connect, disconnect } from '../../services/actions/webSocket';
+import { utils } from '../../utils/utils';
+import OrderCard from '../../components/order-card/order-card';
 
 const ProfileOrdersPage = () => {
+  const dispatch = useDispatch()
+  const store = useSelector(store => store.ws)
+
+  const accessToken = localStorage.getItem('accessToken').split('Bearer ')[1]
+
+  useEffect(() => {
+    dispatch(connect(`${utils.orders}?token=${accessToken}`))
+    return () => {
+      dispatch(disconnect())
+    }
+  }, [dispatch, accessToken])
+  const reversedOrders = store?.ordersFeedProfile?.orders?.toReversed()
+
   return (
     <section className={styles.container}>
       <div>
         <ProfileAnchors />
         <p className={`${styles.sub} mt-20 pl-10 text text_type_main-default`} >
-          тут тоже пусто{'('}
+          В этом разделе вы можете просмотреть свою историю заказов
         </p>
       </div>
-      <span>Тут пока пусто</span>
-    </section>
+      <div className={styles.cardsContainer}>
+        <OrderCard path='/profile/orders/' data={reversedOrders} />
+      </div>
+    </section >
   )
 }
 

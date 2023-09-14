@@ -75,10 +75,10 @@ export const checkUserAuth = () => {
         });
       }
     } else {
-      dispatch(dispatch({
+      dispatch({
         type: IS_AUTH_CHECKED,
         payload: true
-      }));
+      });
     }
   };
 };

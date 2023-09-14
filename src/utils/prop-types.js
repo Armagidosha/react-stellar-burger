@@ -14,3 +14,11 @@ export const ingredientPropType = PropTypes.shape({
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
 });
+
+export const commonPropType = PropTypes.shape({
+    connectingError: PropTypes.string,
+    isConnected: PropTypes.bool,
+    isConnecting: PropTypes.bool,
+    ordersFeedAll: PropTypes.object,
+    ordersFeedProfile: PropTypes.object
+})

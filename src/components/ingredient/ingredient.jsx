@@ -40,7 +40,7 @@ const Ingredient = memo(({ data }) => {
   return (
     <Link
       key={ingredientId}
-      to={`${path.ingredientDetails}${ingredientId}`}
+      to={`${path.ingredient}${ingredientId}`}
       state={{ background: location }}
       className={styles.link}
     >
