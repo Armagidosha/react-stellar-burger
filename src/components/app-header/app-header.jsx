@@ -19,7 +19,7 @@ export default function AppHeader() {
               </>
             )}
           </NavLink>
-          <NavLink to={path.feed} className={`${styles.nav_link} pt-4 pb-4 pr-5 pl-5`}>
+          <NavLink to={path.feed} end className={`${styles.nav_link} pt-4 pb-4 pr-5 pl-5`}>
             {({ isActive }) => (
               <>
                 <ListIcon type={isActive ? 'primary' : 'secondary'} />

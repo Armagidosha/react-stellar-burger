@@ -1,0 +1,13 @@
+.container {
+  /* max-width: 1240px; */
+  padding: 40px 0 0;
+}
+
+.contentContainer {
+  padding: 20px 0 0;
+  display: flex;
+  gap: 60px
+}
+.cardsContainer {
+  max-width: 584px;
+}

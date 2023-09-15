@@ -93,7 +93,7 @@ const BurgerConstructor = () => {
             />
           }
         </li>
-        <li className={styles.list_element}>
+        <li className={`${styles.list_element} ${styles.list_main_element}`}>
           <DndProvider backend={HTML5Backend}>
             <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
               {ingredients.map((ingredient, index) =>

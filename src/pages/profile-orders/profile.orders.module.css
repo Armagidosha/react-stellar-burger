@@ -3,9 +3,14 @@
   justify-content: flex-start;
   width: 1240px;
   padding-top: 120px;
+  gap: 60px
 }
 
 .sub {
   max-width: 320px;
   color: #8585AD;
+}
+
+.cardsContainer {
+  max-width: 844px;
 }

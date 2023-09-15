@@ -23,6 +23,8 @@ import ProfilePage from "../../pages/profile/profile";
 import HomePage from "../../pages/home/HomePage";
 import ProfileOrdersPage from "../../pages/profile-orders/profile-orders";
 import { path } from "../../utils/utils";
+import FeedPage from "../../pages/feed/feed";
+import OrderFeedDetails from "../order-feed-details/order-feed-details";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,28 +47,25 @@ function App() {
         <DndProvider backend={HTML5Backend}>
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
+            <Route path={path.feed} element={<FeedPage />} />
             <Route path={path.register} element={<OnlyUnAuth component={<RegisterPage />} />} />
             <Route path={path.login} element={<OnlyUnAuth component={<LoginPage />} />} />
             <Route path={path.forgot} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
             <Route path={path.recover} element={<OnlyUnAuth component={<RecoverPasswordPage />} />} />
             <Route path={path.profile} element={<OnlyAuth component={<ProfilePage />} />} />
             <Route path={path.profileOrders} element={<OnlyAuth component={<ProfileOrdersPage />} />} />
-            <Route path={`${path.ingredientDetails}:ingredientId`} element={<IngredientDetails />} />
+            <Route path={`${path.ingredient}:ingredientId`} element={<IngredientDetails />} />
+            <Route path={path.profileFeedOrders} element={<OnlyAuth component={<OrderFeedDetails isOrder={'page'} />} />} />
+            <Route path={path.feedOrders} element={<OrderFeedDetails isOrder={'page'} />} />
             <Route path="*" element={<NotFound404 />} />
           </Routes>
           {background && (
             <Routes>
-              <Route path={path.order} element={
-                <Modal>
-                  <OrderDetails />
-                </Modal>
-              } />
-              <Route path={`${path.ingredientDetails}:ingredientId`} element={
-                <Modal>
-                  <IngredientDetails />
-                </Modal>
-              }
-              />
+              <Route path={path.order} element={<Modal><OrderDetails /></Modal>} />
+              <Route path={`${path.ingredient}:ingredientId`} element={<Modal><IngredientDetails /></Modal>} />
+              <Route path={`${path.profileOrders}/:orderNumber`}
+                element={<OnlyAuth component={<Modal><OrderFeedDetails isOrder={'profile'} /></Modal>} />} />
+              <Route path={path.feedOrders} element={<Modal><OrderFeedDetails isOrder={'feed'} /></Modal>} />
             </Routes>
           )}
         </DndProvider>

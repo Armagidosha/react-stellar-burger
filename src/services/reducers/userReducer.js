@@ -20,7 +20,7 @@ export const userReducer = (state = initialState, action) => {
     case SET_USER: {
       return {
         ...state,
-        user: action.payload.user
+        user: action.payload ? action.payload.user : null
       }
     }
     case IS_AUTH_CHECKED: {

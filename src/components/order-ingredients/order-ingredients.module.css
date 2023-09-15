@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  margin: 24px 0 0;
+}
+
+.elContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(45deg, #801AB2, #4D4DFF);
+  border-radius: 50%;
+}
+
+.elImage {
+  object-fit: cover;
+  width: 58px;
+  height: 58px;
+  background-color: #131316;
+  border-radius: 50%;
+}
+
+.elImageHidden {
+  filter: brightness(50%)
+}
+
+.hiddenElements {
+  position: absolute;
+  font-size: 24px;
+  width: 60%;
+  text-align: center;
+}
+
+.totalPriceContainer {
+  display: flex;
+  margin-left: auto;
+  align-self: center;
+}

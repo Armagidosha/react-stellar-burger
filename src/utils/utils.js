@@ -1,18 +1,20 @@
 export const utils = {
   url: 'https://norma.nomoreparties.space/api/',
+  orders: 'wss://norma.nomoreparties.space/orders'
 }
 
 export const path = {
   login: '/login',
   profile: '/profile',
   profileOrders: '/profile/orders',
-  forgot: '/forgot-password',
+  profileFeedOrders: 'profile/orders/:orderNumber',
   recover: '/recover-password',
   register: '/register',
-  feed: '/feed',
   order: '/order',
-  ingredientDetails: '/ingredients/',
-
+  ingredient: 'ingredients/',
+  feed: '/feed',
+  forgot: '/forgot-password',
+  feedOrders: 'feed/:orderNumber'
 }
 
 export const setLocalStorage = (data) => {

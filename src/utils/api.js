@@ -23,6 +23,11 @@ export const postOrderDataToAPI = async (postData) => {
   });
 }
 
+export const getOrderImage = async ( data ) => {
+  const response = await fetch(`${utils.url}orders/${data}`)
+  return checkResponse(response)
+}
+
 export const refreshToken = async () => {
   try {
     const response = await fetch(`${utils.url}/auth/token`, {

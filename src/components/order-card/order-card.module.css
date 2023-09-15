@@ -1,0 +1,28 @@
+.ul {
+  flex-direction: column;
+  list-style: none;
+  display: flex;
+  padding: 0 8px 0 0;
+  gap: 16px;
+  margin: 0;
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+.cardContainer {
+  background-color: #1C1C21;
+  border-radius: 40px;
+  padding: 24px;
+  width: calc(100% - 48px);
+}
+
+.inLiContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link {
+  color: currentColor;
+  text-decoration: none;
+}
