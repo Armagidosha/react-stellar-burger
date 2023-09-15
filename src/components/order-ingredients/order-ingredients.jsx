@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const OrderIngredients = memo(({ order }) => {
-
   const { items } = useSelector(store => store.ingredients)
   const orderItemData = order.ingredients.map(element => items.find(ingredient => ingredient._id === element))
-
-  const totalPrice = orderItemData.reduce((accamulator, element) => accamulator + element.price, 0)
-
+  
+  const totalPrice = orderItemData.reduce((accumulator, element) => {
+    return element && element.price !== undefined ? accumulator + element.price : accumulator;
+  }, 0);
+  
   return (
     <div className={styles.container}>
       {orderItemData.slice(0, 5).map((el, index) =>
@@ -21,10 +22,10 @@ const OrderIngredients = memo(({ order }) => {
             zIndex: 6 - index,
             transform: `translateX(-${15 * index}px)`,
           }}>
-          <img className={styles.elImage} src={el.image} alt={el.name} />
+          <img className={styles.elImage} src={el?.image} alt={el?.name} />
         </div>
       )}
-      {orderItemData.length > 6 && (
+      {orderItemData.length > 5 && (
         <div
           className={styles.elContainer}
           style={{
