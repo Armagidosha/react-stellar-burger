@@ -30,7 +30,7 @@ export const getOrderImage = async ( data ) => {
 
 export const refreshToken = async () => {
   try {
-    const response = await fetch(`${utils.url}/auth/token`, {
+    const response = await fetch(`${utils.url}auth/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

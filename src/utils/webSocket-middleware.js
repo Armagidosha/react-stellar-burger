@@ -1,3 +1,6 @@
+import { connect } from "../services/actions/webSocket";
+import { refreshToken } from "./api";
+
 export const socketMiddleware = (wsActions) => {
     return store => {
         let socket = null;
@@ -31,19 +34,28 @@ export const socketMiddleware = (wsActions) => {
                     dispatch({ type: onError, payload: 'Error' });
                 };
 
-                socket.onmessage = event => {
+                socket.onmessage = async event => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    dispatch({ 
-                        type: onMessage, 
-                        payload: parsedData,
-                        currentUrl: socket.url
-                    
-                    });
+                    if (parsedData.message === 'Invalid or missing token') {
+                        refreshToken()
+                    }
+                    else {
+                        dispatch({
+                            type: onMessage,
+                            payload: parsedData,
+                            currentUrl: socket.url
+                        });
+                    }
                 };
 
-                socket.onclose = () => {
+                socket.onclose = (event) => {
                     dispatch({ type: onClose });
+                    if (event.code === 1006) {
+                        setTimeout(() => {
+                            connect(event.currentTarget.url)
+                        }, 5000);
+                    }
                 };
 
                 if (type === wsSendMessage) {
