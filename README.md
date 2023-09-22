@@ -4,18 +4,16 @@
 
 ## Ссылки
 
-- [Ссылка на профиль GitHub](https://github.com/Armagidosha)
-- [Ссылка на сайт проекта Звёздной бургерной](https://armagidosha.github.io/react-stellar-burger/)
-- [Ссылка на репозиторий проекта на GitHub](https://github.com/Armagidosha/react-stellar-burger)
+ [Профиль Github](https://github.com/Armagidosha)  
+ [Проект на Github Pages](https://armagidosha.github.io/react-stellar-burger/)  
+ [Репозиторий проекта на GitHub](https://github.com/Armagidosha/react-stellar-burger)  
 
 ## О проекте
 
 Звёздная бургерная создана с использованием передовых технологий, чтобы обеспечить вам незабываемый опыт обслуживания. Наш интерфейс разработан с использованием React, что позволяет обеспечить интуитивно понятное и мгновенное взаимодействие с меню, адаптируясь под ваши предпочтения и обновляясь в режиме реального времени. Теперь вы можете легко и быстро собрать свой идеальный бургер всего в несколько кликов.
 
-## Технологии
+## Стек технологий
 
-- React - основной фреймворк для разработки пользовательского интерфейса.
-- HTML - структура и разметка веб-страницы.
-- CSS - стилизация и внешний вид веб-страницы.
-- JavaScript - логика и взаимодействие с пользователем.
-- Git - система контроля версий.
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+ ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
