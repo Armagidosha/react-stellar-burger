@@ -4,7 +4,7 @@
 
 ## Ссылки
 
-- [Ссылка на мой профиль GitHub](https://github.com/Armagidosha)
+- [Ссылка на профиль GitHub](https://github.com/Armagidosha)
 - [Ссылка на сайт проекта Звёздной бургерной](https://armagidosha.github.io/react-stellar-burger/)
 - [Ссылка на репозиторий проекта на GitHub](https://github.com/Armagidosha/react-stellar-burger)
 
