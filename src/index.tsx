@@ -12,9 +12,7 @@ import { socketMiddleware } from "./utils/webSocket-middleware";
 import { configureStore } from "@reduxjs/toolkit";
 
 const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+  (typeof window === 'object' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const middleware = [thunk, socketMiddleware({
   wsConnect: 'ORDER_FEED_CONNECT',
