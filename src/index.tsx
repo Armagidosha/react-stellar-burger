@@ -6,22 +6,24 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { compose } from 'redux';
-import { rootReducer } from "./services/reducers";
 import { HashRouter as Router } from 'react-router-dom';
 import { socketMiddleware } from "./utils/webSocket-middleware";
 import { configureStore } from "@reduxjs/toolkit";
+import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "./services/slices/webSocket-slice";
+import { wsConnect, wsDisconnect } from "./services/actions/webSocket";
+import { rootReducer } from "./services/slices";
 
 const composeEnhancers =
   (typeof window === 'object' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const middleware = [thunk, socketMiddleware({
-  wsConnect: 'ORDER_FEED_CONNECT',
-  wsDisconnect: 'ORDER_FEED_DISCONNECT',
-  wsConnecting: 'ORDER_FEED_WS_CONNECTING',
-  onOpen: 'ORDER_FEED_WS_OPEN',
-  onClose: 'ORDER_FEED_WS_CLOSE',
-  onError: 'ORDER_FEED_ERROR',
-  onMessage: 'ORDER_FEED_WS_MESSAGE'
+  wsConnect: wsConnect,
+  wsDisconnect: wsDisconnect,
+  wsConnecting: wsConnecting,
+  onOpen: wsOpen,
+  onClose: wsClose,
+  onError: wsError,
+  onMessage: wsMessage
 })];
 
 const store = configureStore({

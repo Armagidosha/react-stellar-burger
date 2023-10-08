@@ -1,63 +1,45 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getUser, login, logout, registration } from "../../utils/api";
 import { setLocalStorage, clearLocalStorage } from "../../utils/utils";
+import { isAuthChecked, setUser } from "../slices/user-slice";
 
-export const SET_USER = 'SET_USER';
-export const IS_AUTH_CHECKED = 'IS_AUTH_CHECKED';
-export const REG_SUCCESS = 'REG_SUCCESS';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-
-const setUser = (userData) => ({
-  type: SET_USER,
-  payload: userData
-})
-
-export const postRegistration = (user) => {
-  return async function (dispatch) {
+export const postRegistration = createAsyncThunk(
+  'user/registration',
+  async (userData, thunkAPI) => {
     try {
-      const data = await registration(user);
-      dispatch({ type: REG_SUCCESS })
-      dispatch(setUser(data))
-      setLocalStorage(data)
-      dispatch({ 
-        type: IS_AUTH_CHECKED,
-        payload: true 
-      })
+      const response = await registration(userData);
+      setLocalStorage(response);
+      return response;
     } catch (error) {
-      console.error(`Ошибка: ${error}`)
+      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
     }
   }
-}
+);
 
-export const postLogin = (user) => {
-  return async function (dispatch) {
+export const postLogin = createAsyncThunk(
+  'user/login',
+  async (userData, thunkAPI) => {
     try {
-      const data = await login(user);
-      dispatch({ type: LOGIN_SUCCESS });
-      dispatch(setUser(data));
-      setLocalStorage(data);
-      dispatch({ 
-        type: IS_AUTH_CHECKED,
-        payload: true 
-      })
+      const response = await login(userData)
+      setLocalStorage(response)
+      return response
     } catch (error) {
-      console.error(`Ошибка: ${error}`);
+      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
     }
   }
-}
+);
 
-export const postLogout = () => {
-  return async function (dispatch) {
+export const postLogout = createAsyncThunk(
+  'user/logout',
+  async (thunkAPI) => {
     try {
       await logout();
       clearLocalStorage();
-      dispatch({ type: LOGOUT_SUCCESS })
     } catch (error) {
-      console.error(`Ошибка: ${error}`)
+      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
     }
   }
-}
+);
 
 export const checkUserAuth = () => {
   return async (dispatch) => {
@@ -69,17 +51,10 @@ export const checkUserAuth = () => {
         clearLocalStorage()
         dispatch(setUser(null));
       } finally {
-        dispatch({
-          type: IS_AUTH_CHECKED,
-          payload: true
-        });
+        dispatch(isAuthChecked(true));
       }
     } else {
-      dispatch({
-        type: IS_AUTH_CHECKED,
-        payload: true
-      });
+      dispatch(isAuthChecked(true));
     }
-  };
+  }
 };
-

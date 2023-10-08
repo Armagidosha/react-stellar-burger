@@ -1,29 +1,13 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchIngredientsFromAPI } from "../../utils/api";
 
-export const GET_ITEMS_REQUEST = 'GET_ITEMS_REQUEST';
-export const GET_ITEMS_SUCCESS = 'GET_ITEMS_SUCCESS';
-export const GET_ITEMS_FAILED = 'GET_ITEMS_FAILED';
-
-export const getIngredients = () => {
-  return async function (dispatch) {
+export const getIngredients = createAsyncThunk(
+  'ingredients/get',
+  async (thunkAPI) => {
     try {
-      dispatch({
-        type: GET_ITEMS_REQUEST
-      });
-
-      const data = await fetchIngredientsFromAPI();
-
-      dispatch({
-        type: GET_ITEMS_SUCCESS,
-        items: data.data
-      });
-
+      return fetchIngredientsFromAPI()
     } catch (error) {
-      console.error(`Ошибка: ${error}`);
-
-      dispatch({
-        type: GET_ITEMS_FAILED
-      });
+      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
     }
-  };
-};
+  }
+)

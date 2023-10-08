@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { BurgerMainItem } from '../burger-main-item/burger-main-item';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { path } from '../../utils/utils';
+import { clearStash, removeIngredient, updateIngredients } from '../../services/slices/burger-slice';
 
 
 const BurgerConstructor = () => {
@@ -56,10 +57,7 @@ const BurgerConstructor = () => {
   const moveCard = (dragIndex, hoverIndex) => {
     const updatedIngredients = moveElementInArray(ingredients, dragIndex, hoverIndex);
 
-    dispatch({
-      type: 'UPDATE_INGREDIENTS',
-      item: updatedIngredients,
-    });
+    dispatch(updateIngredients(updatedIngredients));
   };
 
   const handleClickPost = () => {
@@ -67,9 +65,7 @@ const BurgerConstructor = () => {
       dispatch(postOrder({
         "ingredients": burgerState.ingredients.map(ingr => ingr._id)
       })).then(() => {
-        dispatch({
-          type: 'CLEAR_STASH'
-        })
+        dispatch(clearStash())
         navigate(path.order, { state: { background: location } })
       }
       )
@@ -89,7 +85,7 @@ const BurgerConstructor = () => {
               text={`${bun.name} (верх)`}
               price={bun.price}
               thumbnail={bun.image}
-              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
+              handleClose={() => dispatch(removeIngredient(bun))}
             />
           }
         </li>
@@ -110,7 +106,7 @@ const BurgerConstructor = () => {
               text={`${bun.name} (низ)`}
               price={bun.price}
               thumbnail={bun.image}
-              handleClose={() => dispatch({ type: 'REMOVE', item: bun })}
+              handleClose={() => dispatch(removeIngredient(bun))}
             />
           }
         </li>

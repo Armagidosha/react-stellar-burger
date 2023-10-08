@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from "react-router-dom";
 import { path } from "../../utils/utils";
+import { addIngredient } from "../../services/slices/burger-slice";
 
 const Ingredient = memo(({ data }) => {
   const dispatch = useDispatch()
@@ -15,20 +16,19 @@ const Ingredient = memo(({ data }) => {
   const order = useSelector(store => store.order.orderRequest)
   const [, dragRef] = useDrag({
     type: 'ingredient',
-    item: { data }, 
+    item: { data },
     canDrag: () => {
       return !order
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
-      if (item && dropResult) {
-        dispatch({
-          type: 'ADD',
-          item: {
+      if (item.data && dropResult) {
+        dispatch(addIngredient(
+          {
             ...item.data,
             uuid: uuidv4()
           }
-        })
+        ))
       }
     }
   })

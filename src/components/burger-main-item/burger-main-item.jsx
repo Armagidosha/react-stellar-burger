@@ -4,6 +4,7 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import styles from './burger-main-item.module.css'
 import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
+import { removeIngredient } from "../../services/slices/burger-slice";
 
 export const BurgerMainItem = memo(({ingredient, index, _id, moveCard}) => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ export const BurgerMainItem = memo(({ingredient, index, _id, moveCard}) => {
       text={ingredient.name}
       price={ingredient.price}
       thumbnail={ingredient.image}
-      handleClose={() => dispatch({ type: 'REMOVE', item: ingredient })}
+      handleClose={() => dispatch(removeIngredient(ingredient))}
     />
   </li>
   )

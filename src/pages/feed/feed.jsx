@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { connect, disconnect } from '../../services/actions/webSocket';
+import { wsConnect, wsDisconnect } from '../../services/actions/webSocket';
 import { utils } from '../../utils/utils';
 import styles from './feed.module.css';
 import { useEffect } from 'react';
@@ -10,9 +10,9 @@ const FeedPage = () => {
   const dispatch = useDispatch()
   const store = useSelector(store => store.ws)
   useEffect(() => {
-    dispatch(connect(`${utils.orders}/all`))
+    dispatch(wsConnect(`${utils.orders}/all`))
     return () => {
-      dispatch(disconnect())
+      dispatch(wsDisconnect())
     }
   }, [dispatch])
 

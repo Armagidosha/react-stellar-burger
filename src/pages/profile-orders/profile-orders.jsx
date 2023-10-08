@@ -2,7 +2,7 @@ import styles from './profile.orders.module.css';
 import ProfileAnchors from "../../components/profile/profileAnchors";
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { connect, disconnect } from '../../services/actions/webSocket';
+import { wsConnect, wsDisconnect } from '../../services/actions/webSocket';
 import { utils } from '../../utils/utils';
 import OrderCard from '../../components/order-card/order-card';
 
@@ -13,9 +13,9 @@ const ProfileOrdersPage = () => {
   const accessToken = localStorage.getItem('accessToken').split('Bearer ')[1]
 
   useEffect(() => {
-    dispatch(connect(`${utils.orders}?token=${accessToken}`))
+    dispatch(wsConnect(`${utils.orders}?token=${accessToken}`))
     return () => {
-      dispatch(disconnect())
+      dispatch(wsDisconnect())
     }
   }, [dispatch, accessToken])
   const reversedOrders = store?.ordersFeedProfile?.orders?.toReversed()
