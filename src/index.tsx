@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { HashRouter as Router } from 'react-router-dom';
 import { socketMiddleware } from "./utils/webSocket-middleware";
 import { configureStore } from "@reduxjs/toolkit";
-import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "./services/slices/webSocket-slice";
+import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "./services/actions/webSocket";
 import { wsConnect, wsDisconnect } from "./services/actions/webSocket";
 import { rootReducer } from "./services/slices";
 
@@ -27,6 +27,9 @@ const store = configureStore({
     return getDefaultMiddleware().concat(middleware)
   }
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 ReactDOM.render(
   <React.StrictMode>
