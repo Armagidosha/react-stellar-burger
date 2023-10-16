@@ -38,6 +38,8 @@ export const webSocketSlice = createSlice({
       .addCase(wsClose, (state) => {
         state.isConnected = false;
         state.isConnecting = false;
+        state.ordersFeedAll = null;
+        state.ordersFeedProfile = null;
         state.isItems = false;
       })
       .addCase(wsMessage, (state, action) => {
