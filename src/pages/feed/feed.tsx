@@ -5,6 +5,7 @@ import styles from './feed.module.css';
 import { useEffect } from 'react';
 import OrderStats from '../../components/order-feed-stats/order-feed-stats';
 import OrderCard from '../../components/order-card/order-card';
+import Preloader from '../../components/preloader/preloader';
 
 const FeedPage = () => {
   const dispatch = useDispatch()
@@ -16,7 +17,7 @@ const FeedPage = () => {
     }
   }, [dispatch])
 
-  return store.isConnecting ? <p>Загрузка...</p> :
+  return !store.ordersFeedAll ? <Preloader /> :
     (
       <section className={styles.container}>
         <h1 className='text text_type_main-large'>Лента заказов</h1>

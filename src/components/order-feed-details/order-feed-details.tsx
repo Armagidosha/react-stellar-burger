@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 import styles from './order-feed-details.module.css';
 import { FC, useCallback, useEffect, useState } from 'react'
-import { getOrderImage } from '../../utils/api';
+import { getOrderPage } from '../../utils/api';
 import { useSelector } from '../../utils/hooks';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredients, FeedOrders } from '../../types/types';
+import Preloader from '../preloader/preloader';
 
 type OrderFeedDetailsProps = {
   isOrder: string
@@ -40,7 +41,7 @@ const OrderFeedDetails: FC<OrderFeedDetailsProps> = ({ isOrder }) => {
       }
       case 'page': {
         if (orderNumber) {
-          getOrderImage(orderNumber).then(res => setResponse(res.orders?.[0]));
+          getOrderPage(orderNumber).then(res => setResponse(res.orders?.[0]));
         }
         break
       }
@@ -116,7 +117,7 @@ const OrderFeedDetails: FC<OrderFeedDetailsProps> = ({ isOrder }) => {
       </div>
     </div>
   ) : <div className={`${styles.container} ${styles.containerIsLoading}`}>
-    <p className={`text text_type_main-medium`}>Загрузка...</p>
+    <Preloader />
   </div>
 }
 

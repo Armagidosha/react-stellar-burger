@@ -13,5 +13,11 @@
 
 .cardsContainer {
   max-width: 844px;
+  min-height: 700px;
+  width: 100%;
+}
+
+.cardsContainerLoader {
+  height: 350px;
   width: 100%;
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from '../../utils/hooks';
 import { wsConnect, wsDisconnect } from '../../services/actions/webSocket';
 import { utils } from '../../utils/utils';
 import OrderCard from '../../components/order-card/order-card';
+import Preloader from '../../components/preloader/preloader';
 
 const ProfileOrdersPage = () => {
   const dispatch = useDispatch()
@@ -29,7 +30,11 @@ const ProfileOrdersPage = () => {
         </p>
       </div>
       <div className={styles.cardsContainer}>
-        <OrderCard path='/profile/orders/' data={reversedOrders || []} />
+        {!store.ordersFeedProfile ?
+          <div className={styles.cardsContainerLoader}>
+            <Preloader />
+          </div> :
+          <OrderCard path='/profile/orders/' data={reversedOrders || []} />}
       </div>
     </section >
   )

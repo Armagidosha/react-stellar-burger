@@ -2,6 +2,7 @@ import { useSelector } from "../../utils/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import { path } from "../../utils/utils";
 import { FC, ReactElement } from "react";
+import Preloader from "../preloader/preloader";
 
 type Component = {
   component: ReactElement
@@ -20,7 +21,7 @@ const Protected: FC<ProtectedProps> = ({ onlyUnAuth = false, component }) => {
   const location = useLocation();
 
   if (!isAuthChecked) {
-    return (<span className={'mt-5'}>Загрузка...</span>)
+    return <Preloader />
   }
 
   if (onlyUnAuth && user) {
