@@ -60,7 +60,7 @@ function App() {
           </Routes>
           {background && (
             <Routes>
-              <Route path={path.order} element={<Modal><OrderDetails /></Modal>} />
+              <Route path={`${path.order}/:orderId`} element={<Modal><OrderDetails /></Modal>} />
               <Route path={`${path.ingredient}:ingredientId`} element={<Modal><IngredientDetails /></Modal>} />
               <Route path={`${path.profileOrders}/:orderNumber`}
                 element={<OnlyAuth component={<Modal><OrderFeedDetails isOrder={'profile'} /></Modal>} />} />
