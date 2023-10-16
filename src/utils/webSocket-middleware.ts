@@ -38,7 +38,7 @@ export const socketMiddleware = (wsActions: wsActions): Middleware => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           if (parsedData.message === 'Invalid or missing token') {
-            refreshToken()
+            await refreshToken()
           } else {
             if (socket) {
               dispatch(onMessage({
@@ -54,10 +54,11 @@ export const socketMiddleware = (wsActions: wsActions): Middleware => {
           dispatch(onClose());
           if (event.code === 1006) {
             setTimeout(() => {
-            if (socket) {
-              const currentUrl = socket.url
-               dispatch(wsConnect(currentUrl))
-            }}, 5000);
+              if (socket) {
+                const currentUrl = socket.url
+                dispatch(wsConnect(currentUrl))
+              }
+            }, 5000);
           }
         };
 
