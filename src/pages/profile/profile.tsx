@@ -36,18 +36,22 @@ const ProfilePage = () => {
           onChange={handleChange}
           name='name'
           extraClass='mb-6'
+          autoComplete='name'
         />
         <EmailInput
           placeholder='Логин'
           value={inputs.email}
           onChange={handleChange}
           name='email'
-          extraClass='mb-6' />
+          extraClass='mb-6'
+          autoComplete='email'
+        />
         <PasswordInput
           placeholder='Пароль'
           value={inputs.password}
           onChange={handleChange}
           name='password'
+          autoComplete='current-password'
         />
         <div className={`${styles.buttonContainer} pt-6`}>
           <Button

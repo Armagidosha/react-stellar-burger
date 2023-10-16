@@ -32,6 +32,8 @@ const ForgotPasswordPage = () => {
         value={inputs.email}
         onChange={handleChange}
         name='email'
+        autoFocus
+        autoComplete='email'
       />
       <Button
         disabled={inputs.email.length < 3}

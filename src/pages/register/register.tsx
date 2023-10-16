@@ -16,7 +16,7 @@ const RegisterPage = () => {
   })
 
   const submit = async (evt: FormEvent) => {
-    evt.preventDefault();
+    evt.preventDefault()
     dispatch(postRegistration(inputs))
   }
 
@@ -31,18 +31,22 @@ const RegisterPage = () => {
         value={inputs.name}
         onChange={handleChange}
         name='name'
+        autoFocus
+        autoComplete='name'
       />
       <EmailInput
         placeholder='E-mail'
         value={inputs.email}
         onChange={handleChange}
         name='email'
+        autoComplete='one-time-code'
       />
       <PasswordInput
         placeholder='Пароль'
         value={inputs.password}
         onChange={handleChange}
         name='password'
+        autoComplete='new-password'
       />
       <Button
         disabled={!inputs.email.length || !inputs.name.length || inputs.password.length < 6}

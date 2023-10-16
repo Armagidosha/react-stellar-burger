@@ -31,6 +31,8 @@ const RecoverPasswordPage = () => {
         value={inputs.password}
         onChange={handleChange}
         name='password'
+        autoFocus
+        autoComplete='new-password'
       />
       <Input
         placeholder={'Введите код из письма'}
@@ -38,6 +40,7 @@ const RecoverPasswordPage = () => {
         value={inputs.token}
         onChange={handleChange}
         name='token'
+        autoComplete='one-time-code'
       />
       <Button
         disabled={!inputs.password.length || !inputs.token.length}

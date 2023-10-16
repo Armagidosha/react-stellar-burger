@@ -30,12 +30,14 @@ const LoginPage = () => {
         value={inputs.email}
         onChange={handleChange}
         name='email'
+        autoComplete='email'
       />
       <PasswordInput
         placeholder='Пароль'
         value={inputs.password}
         onChange={handleChange}
         name='password'
+        autoComplete='current-password'
       />
       <Button
         disabled={!inputs.email.length || inputs.password.length < 6}
