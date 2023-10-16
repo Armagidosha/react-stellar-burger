@@ -1,13 +1,9 @@
-import type { OrderData, UserData } from "../types/types";
+import type { OrderData, RequestOptions, UserData } from "../types/types";
 import { setLocalStorage, utils } from "./utils";
 
 const checkResponse = (res: Response) => {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-};
-
+return res.ok ? res.json() : res.json().then(error => Promise.reject(error))
+}
 export const fetchIngredientsFromAPI = async () => {
   const response = await fetch(`${utils.url}ingredients`);
   return checkResponse(response);
@@ -15,27 +11,24 @@ export const fetchIngredientsFromAPI = async () => {
 
 export const postOrderDataToAPI = async (postData: OrderData) => {
   const accessToken = localStorage.getItem("accessToken") || "";
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    Authorization: accessToken
-  };
-
   const response = await fetchWithRefresh(`${utils.url}orders`, {
     method: 'POST',
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'authorization': accessToken
+    },
     body: JSON.stringify(postData)
   });
   return response.order.number;
 }
 
 
-export const getOrderImage = async (data: string) => {
+export const getOrderPage = async (data: string) => {
   const response = await fetch(`${utils.url}orders/${data}`)
-  return checkResponse(response)
+  return await checkResponse(response)
 }
 
 export const refreshToken = async () => {
-  try {
     const response = await fetch(`${utils.url}auth/token`, {
       method: "POST",
       headers: {
@@ -45,44 +38,34 @@ export const refreshToken = async () => {
         token: localStorage.getItem("refreshToken"),
       }),
     });
-    return checkResponse(response);
-  } catch (error) {
-    throw error;
-  }
+    const checkedResponse = await checkResponse(response);
+    setLocalStorage(checkedResponse)
+    return checkedResponse
 };
 
-export const fetchWithRefresh = async (url: string, options: RequestInit) => {
+export const fetchWithRefresh = async (url: string, options: RequestOptions) => {
   try {
-    const res = await fetch(url, options);
-    return await checkResponse(res);
+    const response = await fetch(url, options);
+    return await checkResponse(response);
   } catch (error) {
     if ((error as Error).message === "jwt expired") {
       const refreshData = await refreshToken();
-      if (!refreshData.success) {
-        return Promise.reject(refreshData);
-      }
-      setLocalStorage(refreshData)
-      if (options.headers instanceof Headers) {
-        options.headers.set("Authorization", refreshData.accessToken)
-      }
-      const res = await fetch(url, options);
-      return await checkResponse(res);
-    } else {
-      return Promise.reject(error);
+      options.headers.authorization = refreshData.accessToken;
+      const response = await fetch(url, options);
+      return await checkResponse(response);
     }
+    return Promise.reject(`Error: ${error}`)
   }
 };
 
 export const getUser = async () => {
   const accessToken = localStorage.getItem('accessToken') || "";
-  const headers: HeadersInit = ({
-    'Content-Type': 'application/json;charset=utf-8',
-    Authorization: accessToken
-  });
-
   return fetchWithRefresh(`${utils.url}auth/user`, {
     method: 'GET',
-    headers
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'authorization': accessToken
+    }
   });
 }
 
@@ -124,14 +107,12 @@ export const logout = async () => {
 
 export const patchUserData = (userData: UserData) => {
   const accessToken = localStorage.getItem("accessToken") || ''
-  const headers: HeadersInit = ({
-    'Content-Type': 'application/json',
-    Authorization: accessToken,
-  })
-  
   return fetchWithRefresh(`${utils.url}auth/user`, {
     method: 'PATCH',
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'authorization': accessToken,
+    },
     body: JSON.stringify(userData)
   })
 }

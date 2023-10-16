@@ -1,5 +1,12 @@
 import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
+export interface RequestOptions extends RequestInit {
+  headers: {
+    'Content-Type': string
+    authorization?: string;
+  };
+}
+
 export type Ingredients = {
   readonly _id: string;
   readonly name: string;

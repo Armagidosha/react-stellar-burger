@@ -7,39 +7,27 @@ import { UserData } from "../../types/types";
 
 export const postRegistration = createAsyncThunk(
   'user/registration',
-  async (userData: UserData, thunkAPI) => {
-    try {
-      const response = await registration(userData);
-      setLocalStorage(response);
-      return response;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
-    }
+  async (userData: UserData) => {
+    const response = await registration(userData);
+    setLocalStorage(response);
+    return response;
   }
 );
 
 export const postLogin = createAsyncThunk(
   'user/login',
-  async (userData: UserData, thunkAPI) => {
-    try {
-      const response = await login(userData)
-      setLocalStorage(response)
-      return response
-    } catch (error) {
-      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
-    }
+  async (userData: UserData) => {
+    const response = await login(userData)
+    setLocalStorage(response)
+    return response
   }
 );
 
 export const postLogout = createAsyncThunk(
   'user/logout',
-  async (_, thunkAPI) => {
-    try {
-      await logout();
-      clearLocalStorage();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(`Ошибка: ${error}`)
-    }
+  async () => {
+    await logout();
+    clearLocalStorage();
   }
 );
 
@@ -51,7 +39,7 @@ export const checkUserAuth = () => {
         dispatch(setUser(response))
       } catch (error) {
         clearLocalStorage()
-        dispatch(setUser({user: null}));
+        dispatch(setUser({ user: null }));
       } finally {
         dispatch(isAuthChecked(true));
       }
