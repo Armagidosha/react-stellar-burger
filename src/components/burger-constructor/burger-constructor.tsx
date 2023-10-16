@@ -56,7 +56,6 @@ const BurgerConstructor = () => {
 
   const moveCard = (dragIndex: number, hoverIndex: number) => {
     const updatedIngredients = moveElementInArray(ingredients, dragIndex, hoverIndex);
-
     dispatch(updateIngredients(updatedIngredients));
   };
 
@@ -64,11 +63,10 @@ const BurgerConstructor = () => {
     if (user) {
       dispatch(postOrder({
         "ingredients": burgerState.ingredients.map(ingr => ingr._id)
-      })).then(() => {
+      })).then((res) => {
         dispatch(clearStash())
-        navigate(path.order, { state: { background: location } })
-      }
-      )
+        navigate(`${path.order}/${res.payload}`, { state: { background: location } })
+      })
     } else {
       navigate(path.login)
     }
