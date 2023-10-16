@@ -31,7 +31,9 @@ export default function AppHeader() {
           </NavLink>
         </div>
         <div className={styles.logo}>
-          <Logo />
+          <NavLink to={'/'} className={styles.nav_link}>
+            <Logo />
+          </NavLink>
         </div>
         <NavLink to={path.profile} className={`${styles.nav_link} pt-4 pb-4 pr-5 pl-5`}>
           {({ isActive }) => (
