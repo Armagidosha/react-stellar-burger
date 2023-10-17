@@ -62,15 +62,13 @@ export const socketMiddleware = (wsActions: wsActions): Middleware => {
               dispatch(wsConnect(`${utils.orders}?token=${accessToken.split('Bearer ')[1]}`))
               errorMessage = ''
             } else {
-              dispatch(wsDisconnect())
               timer = setTimeout(() => {
+                dispatch(wsDisconnect())
                 if (!socket) {
                   dispatch(wsConnect((event.target as WebSocket).url))
                 }
               }, 5000)
             }
-          } else {
-            dispatch(wsDisconnect())
           }
         };
 
