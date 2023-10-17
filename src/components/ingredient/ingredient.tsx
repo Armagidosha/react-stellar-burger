@@ -47,8 +47,9 @@ const Ingredient: FC<IngredientProps> = memo(({ data }) => {
       to={`${path.ingredient}${ingredientId}`}
       state={{ background: location }}
       className={styles.link}
+      ref={dragRef}
     >
-      <div ref={dragRef} className={styles.container}>
+      <div className={styles.container}>
         <img className={`${styles.image} pr-4 pl-4`} src={data.image} alt={data.name} />
         <div className={`${styles.priceContainer} mt-1 mb-1`}>
           <p className={'text text_type_digits-default pr-2'}>{data.price}</p>
