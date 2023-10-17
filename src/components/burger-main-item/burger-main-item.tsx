@@ -1,7 +1,7 @@
+import styles from './burger-main-item.module.css'
 import { FC, memo, useRef } from "react";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './burger-main-item.module.css'
 import { useDispatch } from "../../utils/hooks";
 import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { removeIngredient } from "../../services/slices/burger-slice";
@@ -19,10 +19,10 @@ type Item = {
   _id: string
 }
 
-export const BurgerMainItem: FC<BurgerMainItemProps> = memo(({ingredient, index, _id, moveCard}) => {
+export const BurgerMainItem: FC<BurgerMainItemProps> = memo(({ ingredient, index, _id, moveCard }) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLLIElement>(null);
-  const [{handlerId}, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
     accept: 'sort',
     collect(monitor) {
       return {
@@ -69,15 +69,15 @@ export const BurgerMainItem: FC<BurgerMainItemProps> = memo(({ingredient, index,
   drag(drop(ref))
 
   return (
-    <li ref={ref} key={ingredient.uuid} style={{opacity}} data-handler-id={handlerId} className={styles.ingredients_li}>
-    <DragIcon type='primary' />
-    <ConstructorElement
-      isLocked={false}
-      text={ingredient.name}
-      price={ingredient.price}
-      thumbnail={ingredient.image}
-      handleClose={() => dispatch(removeIngredient(ingredient))}
-    />
-  </li>
+    <li ref={ref} key={ingredient.uuid} style={{ opacity }} data-handler-id={handlerId} className={styles.ingredients_li}>
+      <DragIcon type='primary' />
+      <ConstructorElement
+        isLocked={false}
+        text={ingredient.name}
+        price={ingredient.price}
+        thumbnail={ingredient.image}
+        handleClose={() => dispatch(removeIngredient(ingredient))}
+      />
+    </li>
   )
 }) 
