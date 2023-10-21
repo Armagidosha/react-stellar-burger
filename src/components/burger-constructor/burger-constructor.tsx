@@ -34,8 +34,10 @@ const BurgerConstructor = () => {
 
   const isActive = canDrop && isOver
   let backgroundColor = ''
+  let stashColor = ''
   if (isActive) {
-    backgroundColor = '#8585AD'
+    backgroundColor = '#8585ad'
+    stashColor = '#3A3A55'
   } else if (canDrop) {
     backgroundColor = '#222'
   }
@@ -75,39 +77,52 @@ const BurgerConstructor = () => {
   return (
     <section className={`${styles.burgerConstructor} custom-scroll pt-25 pl-4`}>
       <ul ref={onDrop} style={{ backgroundColor }} className={styles.ingredients_ul}>
-        <li className={styles.list_element}>
-          {bun &&
-            <ConstructorElement
-              type="top"
-              isLocked={setLocked()}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              handleClose={() => dispatch(removeIngredient(bun))}
-            />
-          }
-        </li>
-        <li className={`${styles.list_element} ${styles.list_main_element}`}>
-          <DndProvider backend={HTML5Backend}>
-            <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
-              {ingredients.map((ingredient, index) =>
-                <BurgerMainItem key={ingredient.uuid} ingredient={ingredient} _id={ingredient._id} moveCard={moveCard} index={index} />
-              )}
-            </ul>
-          </DndProvider>
-        </li>
-        <li className={styles.list_element}>
-          {bun &&
-            <ConstructorElement
-              type="bottom"
-              isLocked={setLocked()}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              handleClose={() => dispatch(removeIngredient(bun))}
-            />
-          }
-        </li>
+        {burgerState.ingredients.length ?
+          <>
+
+            <li className={styles.list_element}>
+              {bun &&
+                <ConstructorElement
+                  type="top"
+                  isLocked={setLocked()}
+                  text={`${bun.name} (верх)`}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                  handleClose={() => dispatch(removeIngredient(bun))}
+                />
+              }
+            </li>
+            <li className={`${styles.list_element} ${styles.list_main_element}`}>
+              <DndProvider backend={HTML5Backend}>
+                <ul className={`${styles.main_ingredients_ul} custom-scroll`}>
+                  {ingredients.map((ingredient, index) =>
+                    <BurgerMainItem key={ingredient.uuid} ingredient={ingredient} _id={ingredient._id} moveCard={moveCard} index={index} />
+                  )}
+                </ul>
+              </DndProvider>
+            </li>
+            <li className={styles.list_element}>
+              {bun &&
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={setLocked()}
+                  text={`${bun.name} (низ)`}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                  handleClose={() => dispatch(removeIngredient(bun))}
+                />
+              }
+            </li>
+          </> :
+          <div className={styles.stash_container}>
+            <p className={`${styles.stash} text text_type_main-default text_color_inactive`} style={{ color: stashColor }}>
+              {`В вашей корзине пока пусто :(`}
+            </p>
+            <p className={`${styles.stash} text text_type_main-default text_color_inactive`} style={{ color: stashColor }}>
+              Чтобы добавить, перенесите ингредиент из левого меню
+            </p>
+          </div>
+        }
       </ul>
       <div className={`${styles.sum_container} pt-10 pr-4`}>
         <span className={`${styles.sum} text text_type_digits-medium pr-10`}>
