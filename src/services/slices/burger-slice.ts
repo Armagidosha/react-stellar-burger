@@ -39,6 +39,7 @@ export const burgerSlice = createSlice({
         [prevBun?._id]: 0,
         [ingredientId]: currentCount + 1,
       } : isBun ? {
+        ...state.ingredientCounts,
         [ingredientId]: currentCount + 1
       } : {
         ...state.ingredientCounts,
