@@ -6,8 +6,9 @@
 .contentContainer {
   padding: 20px 0 0;
   display: flex;
-  gap: 60px
+  gap: 60px;
 }
+
 .cardsContainer {
   max-width: 584px;
 }
