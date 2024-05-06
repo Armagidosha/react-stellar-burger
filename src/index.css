@@ -1,3 +1,13 @@
 body {
   margin: 0;
 }
+
+.custom-scroll {
+  scrollbar-color: auto;
+}
+
+@-moz-document url-prefix() {
+	.custom-scroll {
+		scrollbar-color: #8585AD #2F2F37;
+	}
+}
