@@ -4,7 +4,6 @@
 
 ## Ссылки
 
- [Профиль Github](https://github.com/Armagidosha)  
  [Проект на Github Pages](https://armagidosha.github.io/react-stellar-burger/)  
  [Репозиторий проекта на GitHub](https://github.com/Armagidosha/react-stellar-burger)  
 
